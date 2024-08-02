@@ -735,8 +735,17 @@
             </div>
           </div>
 
-          <div class="flex justify-between mt-6" v-if="!formSubmitted">
+          <div
+            :class="[
+              'flex mt-6',
+              currentSection === 0 && currentStep === 0
+                ? 'justify-end'
+                : 'justify-between',
+            ]"
+            v-if="!formSubmitted"
+          >
             <button
+              v-if="!(currentSection == 0 && currentStep == 0)"
               @click="previousStep"
               type="button"
               class="px-4 sm:px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
