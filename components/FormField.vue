@@ -3,21 +3,21 @@
     <label
       :for="id"
       v-if="!not_label"
-      class="block text-sm font-medium text-gray-700 mb-1"
+      class="flex gap-2 text-sm font-medium text-gray-700 mb-1"
     >
       {{ label }} <span v-if="required" class="text-red-500 mr-2">*</span>
-      <span v-if="tooltip" class="relative inline-block ml-1 group">
-        <span
-          class="relative cursor-help text-gray-900 hover:text-gray-700 flex items-center justify-center w-4 h-4 bg-gray-900 text-white rounded-full"
+      <div
+        class="w-5 h-5 bg-green-200 flex align-middle justify-center rounded"
+        v-if="tooltip"
+      >
+        <button
+          type="button"
+          class="text-gray-100 hover:text-gray-200 focus:outline-none"
+          @click="openModal"
         >
           ?
-          <div
-            class="absolute z-10 w-64 px-4 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg transition-opacity duration-300 opacity-0 invisible group-hover:opacity-100 group-hover:visible -top-10 left-1/2 transform -translate-x-1/2"
-          >
-            {{ tooltip }}
-          </div>
-        </span>
-      </span>
+        </button>
+      </div>
     </label>
     <input
       v-if="type !== 'select' && type !== 'checkbox'"
@@ -66,6 +66,12 @@
         label
       }}</label>
     </div>
+    <InfoModal
+      :is-open="isModalOpen"
+      :title="label"
+      :content="tooltip"
+      @close="closeModal"
+    />
   </div>
 </template>
 
@@ -90,14 +96,14 @@ const props = defineProps({
   tooltip: String,
 });
 
+const isModalOpen = ref(false);
+const openModal = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+
 defineEmits(["update:modelValue"]);
 </script>
-
-<style scoped>
-.group:hover .group-hover\:opacity-100 {
-  opacity: 1;
-}
-.group:hover .group-hover\:visible {
-  visibility: visible;
-}
-</style>
