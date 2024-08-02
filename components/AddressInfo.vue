@@ -26,7 +26,6 @@
         v-model="formData.estado"
         type="select"
         :options="estadoOptions"
-        @change="loadCidades"
         required
         disabled
       />
@@ -92,6 +91,7 @@
 import { defineProps, defineEmits, ref, onMounted } from "vue";
 import FormField from "./FormField.vue";
 import { maskCEP } from "~/utils/masks";
+import { fetchEstados, fetchCidades, buscarCEP } from "~/services/apiService";
 
 const props = defineProps({
   formData: Object,
@@ -108,50 +108,16 @@ const areaOptions = ref([
 const estadoOptions = ref([]);
 const cidadeOptions = ref([]);
 
-const loadEstados = async () => {
-  try {
-    const response = await fetch(
-      "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
-    );
-    const data = await response.json();
-    estadoOptions.value = data.map((estado) => ({
-      value: estado.sigla,
-      label: estado.nome,
-    }));
-  } catch (error) {
-    console.error("Erro ao carregar estados:", error);
-  }
-};
-
-const loadCidades = async () => {
-  if (!props.formData.estado) return;
-  try {
-    const response = await fetch(
-      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${props.formData.estado}/municipios`
-    );
-    const data = await response.json();
-    cidadeOptions.value = data.map((cidade) => ({
-      value: cidade.nome,
-      label: cidade.nome,
-    }));
-  } catch (error) {
-    console.error("Erro ao carregar cidades:", error);
-  }
-};
-
 const handleCEPInput = async (event) => {
   const cep = event.target.value.replace(/\D/g, "");
   if (cep.length === 8) {
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
-      if (!data.erro) {
-        props.formData.logradouro = data.logradouro;
-        props.formData.bairro = data.bairro;
-        props.formData.estado = data.uf;
-        await loadCidades();
-        props.formData.cidade = data.localidade;
-      }
+      const data = await buscarCEP(cep);
+      props.formData.logradouro = data.logradouro;
+      props.formData.bairro = data.bairro;
+      props.formData.estado = data.uf;
+      cidadeOptions.value = await fetchCidades(data.uf);
+      props.formData.cidade = data.localidade;
     } catch (error) {
       console.error("Erro ao buscar CEP:", error);
     }
@@ -167,7 +133,11 @@ const handleSubmit = (event) => {
   }
 };
 
-onMounted(() => {
-  loadEstados();
+onMounted(async () => {
+  try {
+    estadoOptions.value = await fetchEstados();
+  } catch (error) {
+    console.error("Erro ao carregar estados:", error);
+  }
 });
 </script>

@@ -5,7 +5,19 @@
       v-if="!not_label"
       class="block text-sm font-medium text-gray-700 mb-1"
     >
-      {{ label }} <span v-if="required" class="text-red-500">*</span>
+      {{ label }} <span v-if="required" class="text-red-500 mr-2">*</span>
+      <span v-if="tooltip" class="relative inline-block ml-1 group">
+        <span
+          class="relative cursor-help text-gray-900 hover:text-gray-700 flex items-center justify-center w-4 h-4 bg-gray-900 text-white rounded-full"
+        >
+          ?
+          <div
+            class="absolute z-10 w-64 px-4 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg transition-opacity duration-300 opacity-0 invisible group-hover:opacity-100 group-hover:visible -top-10 left-1/2 transform -translate-x-1/2"
+          >
+            {{ tooltip }}
+          </div>
+        </span>
+      </span>
     </label>
     <input
       v-if="type !== 'select' && type !== 'checkbox'"
@@ -75,7 +87,17 @@ const props = defineProps({
   pattern: String,
   title: String,
   disabled: Boolean,
+  tooltip: String,
 });
 
 defineEmits(["update:modelValue"]);
 </script>
+
+<style scoped>
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+.group:hover .group-hover\:visible {
+  visibility: visible;
+}
+</style>

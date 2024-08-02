@@ -14,3 +14,50 @@ export const fetchCountries = async () => {
     throw error;
   }
 };
+
+export const fetchEstados = async () => {
+  try {
+    const response = await fetch(
+      "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
+    );
+    const data = await response.json();
+    return data.map((estado) => ({
+      value: estado.sigla,
+      label: estado.nome,
+    }));
+  } catch (error) {
+    console.error("Erro ao carregar estados:", error);
+    throw error;
+  }
+};
+
+export const fetchCidades = async (estado) => {
+  if (!estado) return [];
+  try {
+    const response = await fetch(
+      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`
+    );
+    const data = await response.json();
+    return data.map((cidade) => ({
+      value: cidade.nome,
+      label: cidade.nome,
+    }));
+  } catch (error) {
+    console.error("Erro ao carregar cidades:", error);
+    throw error;
+  }
+};
+
+export const buscarCEP = async (cep) => {
+  try {
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await response.json();
+    if (data.erro) {
+      throw new Error("CEP não encontrado");
+    }
+    return data;
+  } catch (error) {
+    console.error("Erro ao buscar CEP:", error);
+    throw error;
+  }
+};

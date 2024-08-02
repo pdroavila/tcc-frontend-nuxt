@@ -40,6 +40,7 @@
         pattern="[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"
         title="Deve conter apenas letras"
         placeholder="Nome completo"
+        tooltip="Nome social é o nome pelo qual você prefere ser chamado(a), podendo diferir do nome em seus documentos oficiais. Se aplicável, digite seu nome social completo."
       />
       <FormField
         label="Telefone celular"
