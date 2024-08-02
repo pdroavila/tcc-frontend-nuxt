@@ -1,0 +1,196 @@
+export const nacionalidadeOptions = [
+    { value: "1", label: "Brasil" },
+  ];
+  
+  export const poloOptions = [
+    { "value": "1", "label": "Agudo" },
+    { "value": "2", "label": "Ametista" },
+    { "value": "3", "label": "Arroio dos Ratos" },
+    { "value": "4", "label": "Bagé" },
+    { "value": "5", "label": "Balneário Pinhal" },
+    { "value": "6", "label": "Cacequi" },
+    { "value": "7", "label": "Cachoeira do Sul" },
+    { "value": "8", "label": "Camaquã" },
+    { "value": "9", "label": "Camargo" },
+    { "value": "10", "label": "Candelária" },
+    { "value": "11", "label": "Canguçu" },
+    { "value": "12", "label": "Capão do Leão" },
+    { "value": "13", "label": "Caxias do Sul" },
+    { "value": "14", "label": "Cerro Largo" },
+    { "value": "15", "label": "Charqueadas" },
+    { "value": "16", "label": "Constantina" },
+    { "value": "17", "label": "Cruz Alta" },
+    { "value": "18", "label": "Encantado" },
+    { "value": "19", "label": "Encruzilhada do Sul" },
+    { "value": "20", "label": "Engenho Velho" },
+    { "value": "21", "label": "Entre Rios" },
+    { "value": "22", "label": "Esteio" },
+    { "value": "23", "label": "Faxinal do Soturno" },
+    { "value": "24", "label": "Gramado" },
+    { "value": "25", "label": "Gramado dos Loureiros" },
+    { "value": "26", "label": "Gravataí" },
+    { "value": "27", "label": "Herval" },
+    { "value": "28", "label": "Hulha Negra" },
+    { "value": "29", "label": "Imbé" },
+    { "value": "30", "label": "Itaqui" },
+    { "value": "31", "label": "Jacuizinho" },
+    { "value": "32", "label": "Jaguarão" },
+    { "value": "33", "label": "Jaquirana" },
+    { "value": "34", "label": "Lajeado" },
+    { "value": "35", "label": "Mostardas" },
+    { "value": "36", "label": "Nonoai" },
+    { "value": "37", "label": "Novo Hamburgo" },
+    { "value": "38", "label": "Novo Xingu" },
+    { "value": "39", "label": "Novos Cabrais" },
+    { "value": "40", "label": "Palmeira das Missões" },
+    { "value": "41", "label": "Panambi" },
+    { "value": "42", "label": "Pareci Novo" },
+    { "value": "43", "label": "Passo Fundo" },
+    { "value": "44", "label": "Pedro Osório" },
+    { "value": "45", "label": "Pelotas" },
+    { "value": "46", "label": "Pelotas-Visconde da Graça" },
+    { "value": "47", "label": "Picada Café" },
+    { "value": "48", "label": "Pinheiro Machado" },
+    { "value": "49", "label": "Piratini" },
+    { "value": "50", "label": "Planalto" },
+    { "value": "51", "label": "Ponte Serrada" },
+    { "value": "52", "label": "Porto Alegre (Convênio INES)" },
+    { "value": "53", "label": "Praia Grande" },
+    { "value": "54", "label": "Quaraí" },
+    { "value": "55", "label": "Restinga Seca" },
+    { "value": "56", "label": "Rio dos Índios" },
+    { "value": "57", "label": "Rio Grande" },
+    { "value": "58", "label": "Rodeio Bonito" },
+    { "value": "59", "label": "Ronda Alta" },
+    { "value": "60", "label": "Rosário do Sul" },
+    { "value": "61", "label": "Sant´Ana do Livramento" },
+    { "value": "62", "label": "Santa Maria" },
+    { "value": "63", "label": "Santa Vitória do Palmar" },
+    { "value": "64", "label": "Santana da Boa Vista" },
+    { "value": "65", "label": "Santiago" },
+    { "value": "66", "label": "Santo Antônio da Patrulha" },
+    { "value": "67", "label": "São Borja" },
+    { "value": "68", "label": "São Francisco de Paula" },
+    { "value": "69", "label": "São Gabriel" },
+    { "value": "70", "label": "São João do Polêsine" },
+    { "value": "71", "label": "São José das Missões" },
+    { "value": "72", "label": "São José do Norte" },
+    { "value": "73", "label": "São Lourenço do Sul" },
+    { "value": "74", "label": "São Sepé" },
+    { "value": "75", "label": "Sapiranga" },
+    { "value": "76", "label": "Sapucaia do Sul" },
+    { "value": "77", "label": "Sarandi" },
+    { "value": "78", "label": "Seberi" },
+    { "value": "79", "label": "Serafina Corrêa" },
+    { "value": "80", "label": "Sobradinho" },
+    { "value": "81", "label": "Tapejara" },
+    { "value": "82", "label": "Tio Hugo" },
+    { "value": "83", "label": "Torres" },
+    { "value": "84", "label": "Três de Maio" },
+    { "value": "85", "label": "Três Palmeiras" },
+    { "value": "86", "label": "Três Passos" },
+    { "value": "87", "label": "Trindade do sul" },
+    { "value": "88", "label": "Uruguaiana" },
+    { "value": "89", "label": "Venâncio Aires" },
+    { "value": "90", "label": "Vera Cruz" },
+    { "value": "91", "label": "Veranópolis" },
+    { "value": "92", "label": "Vila Flores" }
+  ]
+
+  
+  export const generoOptions = [
+    { value: "masculino", label: "Masculino" },
+    { value: "feminino", label: "Feminino" },
+    { value: "outro", label: "Outro" },
+    { value: "nao", label: "Não quero informar" },
+  ];
+  
+  export const simNaoOptions = [
+    { value: "sim", label: "Sim" },
+    { value: "nao", label: "Não" },
+  ];
+  
+  export const estadoCivilOptions = [
+    { value: "solteiro", label: "Solteiro(a)" },
+    { value: "casado", label: "Casado(a)" },
+    { value: "divorciado", label: "Divorciado(a)" },
+    { value: "viuvo", label: "Viúvo(a)" },
+  ];
+  
+  export const rendaOptions = [
+    { value: "ate05sm", label: "Até 0,5 salário mínimo" },
+    { value: "05a1sm", label: "0,5 a 1,0 salário mínimo" },
+    { value: "1a15sm", label: "1,0 a 1,5 salário mínimo" },
+    { value: "15a25sm", label: "1,5 a 2,5 salários mínimos" },
+    { value: "25a35sm", label: "2,5 a 3,5 salários mínimos" },
+    { value: "mais35sm", label: "Acima de 3,5 salários mínimos" },
+    { value: "nao", label: "Prefiro não informar" },
+  ];
+  
+  export const etniaOptions = [
+    { value: "branco", label: "Branco" },
+    { value: "preto", label: "Preto" },
+    { value: "pardo", label: "Pardo" },
+    { value: "amarelo", label: "Amarelo" },
+    { value: "indigena", label: "Indígena" },
+    { value: "nao", label: "Não quero informar" },
+  ];
+  
+  export const areaOptions = [
+    { value: "urbana", label: "Urbana" },
+    { value: "rural", label: "Rural" },
+  ];
+  
+  export const cidadeOptions = [
+    { value: "1", label: "Cidade A" },
+    { value: "2", label: "Cidade B" },
+    { value: "3", label: "Cidade C" },
+  ];
+  
+  export const estadoOptions = [
+    { "value": "1", "label": "Acre" },
+    { "value": "2", "label": "Alagoas" },
+    { "value": "3", "label": "Amapá" },
+    { "value": "4", "label": "Amazonas" },
+    { "value": "5", "label": "Bahia" },
+    { "value": "6", "label": "Ceará" },
+    { "value": "7", "label": "Distrito Federal" },
+    { "value": "8", "label": "Espírito Santo" },
+    { "value": "9", "label": "Goiás" },
+    { "value": "10", "label": "Maranhão" },
+    { "value": "11", "label": "Mato Grosso" },
+    { "value": "12", "label": "Mato Grosso do Sul" },
+    { "value": "13", "label": "Minas Gerais" },
+    { "value": "14", "label": "Pará" },
+    { "value": "15", "label": "Paraíba" },
+    { "value": "16", "label": "Paraná" },
+    { "value": "17", "label": "Pernambuco" },
+    { "value": "18", "label": "Piauí" },
+    { "value": "19", "label": "Rio de Janeiro" },
+    { "value": "20", "label": "Rio Grande do Norte" },
+    { "value": "21", "label": "Rio Grande do Sul" },
+    { "value": "22", "label": "Rondônia" },
+    { "value": "23", "label": "Roraima" },
+    { "value": "24", "label": "Santa Catarina" },
+    { "value": "25", "label": "São Paulo" },
+    { "value": "26", "label": "Sergipe" },
+    { "value": "27", "label": "Tocantins" }
+  ];
+  
+  export const tipoEscolaOptions = [
+    { value: "publica", label: "Pública" },
+    { value: "privada", label: "Privada" },
+  ];
+  
+  export const escolaridadeOptions = [
+    { value: "fundamental_i_completo", label: "Fundamental I - Completo (1º a 5º)" },
+    { value: "fundamental_i_incompleto", label: "Fundamental I - Incompleto (1º a 5º)" },
+    { value: "fundamental_ii_completo", label: "Fundamental II - Completo (6º a 9º)" },
+    { value: "fundamental_ii_incompleto", label: "Fundamental II - Incompleto (6º a 9º)" },
+    { value: "medio_completo", label: "Médio - Completo" },
+    { value: "medio_incompleto", label: "Médio - Incompleto" },
+    { value: "superior_completo", label: "Superior - Completo" },
+    { value: "superior_incompleto", label: "Superior - Incompleto" },
+    { value: "pos_graduacao_completo", label: "Pós-graduação - Completo" },
+    { value: "pos_graduacao_incompleto", label: "Pós-graduação - Incompleto" },
+  ];
