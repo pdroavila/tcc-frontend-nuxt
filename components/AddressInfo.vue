@@ -27,7 +27,6 @@
         type="select"
         :options="estadoOptions"
         required
-        disabled
       />
       <FormField
         label="Cidade"
@@ -35,7 +34,6 @@
         type="select"
         :options="cidadeOptions"
         required
-        disabled
       />
       <div>
         <FormField
