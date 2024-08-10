@@ -5,6 +5,13 @@
     </label>
     <div
       class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+      @dragover.prevent="dragover"
+      @dragleave="dragleave"
+      @drop.prevent="drop"
+      :class="{
+        'border-indigo-500': isDragging,
+        'border-green-500': fileUploaded,
+      }"
     >
       <div class="space-y-1 text-center">
         <svg
@@ -34,7 +41,7 @@
               class="sr-only"
               :accept="accept"
               @change="handleFileUpload"
-              :required="required"
+              :required="required && !fileUploaded"
             />
           </label>
           <p class="pl-1">ou arraste e solte</p>
@@ -44,12 +51,14 @@
         </p>
       </div>
     </div>
-    <p v-if="fileName" class="mt-2 text-sm text-gray-500">{{ fileName }}</p>
+    <p v-if="fileName" class="mt-2 text-sm text-gray-500 break-words">
+      Arquivo selecionado: {{ fileName }}
+    </p>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, watch } from "vue";
 
 const props = defineProps({
   id: String,
@@ -62,12 +71,51 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const fileName = ref("");
+const isDragging = ref(false);
+const fileUploaded = ref(false);
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    fileUploaded.value = !!newValue;
+    if (newValue) {
+      fileName.value = newValue.name;
+    } else {
+      fileName.value = "";
+    }
+  },
+  { immediate: true }
+);
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
+  processFile(file);
+};
+
+const processFile = (file) => {
   if (file) {
-    fileName.value = file.name;
-    emit("update:modelValue", file);
+    if (file.size <= 10 * 1024 * 1024) {
+      // 10MB limit
+      fileName.value = file.name;
+      fileUploaded.value = true;
+      emit("update:modelValue", file);
+    } else {
+      alert("O arquivo é muito grande. O tamanho máximo permitido é 10MB.");
+    }
   }
+};
+
+const dragover = (event) => {
+  isDragging.value = true;
+};
+
+const dragleave = (event) => {
+  isDragging.value = false;
+};
+
+const drop = (event) => {
+  isDragging.value = false;
+  const file = event.dataTransfer.files[0];
+  processFile(file);
 };
 </script>

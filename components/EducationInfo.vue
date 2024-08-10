@@ -24,7 +24,7 @@
           <FileUpload
             label="Envie o histórico escolar"
             v-model="formData.historicoEscolar"
-            accept=".pdf"
+            accept="image/png, image/jpeg, image/jpg, .pdf"
             required
           />
         </div>
