@@ -182,7 +182,7 @@ const validateDataNascimento = () => {
 
   if (dataNascimento > dezoitoAnosAtras) {
     errorDataNascimento.value =
-      "Você deve ter pelo menos 18 anos para se registrar.";
+      "Você deve ter pelo menos 18 anos para fazer a inscrição.";
   } else {
     errorDataNascimento.value = "";
   }
