@@ -64,7 +64,11 @@
         v-model="formData.dataNascimento"
         type="date"
         required
+        @input="validateDataNascimento"
       />
+      <span v-if="errorDataNascimento" class="text-red-500 text-sm">
+        {{ errorDataNascimento }}
+      </span>
       <div class="sm:col-span-2">
         <FormField
           label="Polo ofertante"
@@ -169,6 +173,20 @@ const countries = ref([]);
 const loadingCountries = ref(false);
 const countriesError = ref("");
 const documentoValido = ref(true);
+const errorDataNascimento = ref("");
+
+const validateDataNascimento = () => {
+  const dataNascimento = new Date(props.formData.dataNascimento);
+  const dezoitoAnosAtras = new Date();
+  dezoitoAnosAtras.setFullYear(dezoitoAnosAtras.getFullYear() - 18);
+
+  if (dataNascimento > dezoitoAnosAtras) {
+    errorDataNascimento.value =
+      "Você deve ter pelo menos 18 anos para se registrar.";
+  } else {
+    errorDataNascimento.value = "";
+  }
+};
 
 onMounted(async () => {
   try {
@@ -240,7 +258,8 @@ const maskCPF = (event) => {
 const handleSubmit = (event) => {
   if (
     event.target.checkValidity() &&
-    (documentoValido.value || props.formData.isCedulaEstrangeira)
+    (documentoValido.value || props.formData.isCedulaEstrangeira) &&
+    !errorDataNascimento.value
   ) {
     emit("next");
   } else {
@@ -249,6 +268,7 @@ const handleSubmit = (event) => {
 };
 
 watch(() => props.formData.isCedulaEstrangeira, validateDocumento);
+watch(() => props.formData.dataNascimento, validateDataNascimento);
 </script>
 
 <style scoped>
