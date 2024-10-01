@@ -14,8 +14,9 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+const config = useRuntimeConfig()
 
-const { data: courses, error } = await useFetch('http://127.0.0.1:8000/api/cursos/?format=json');
+const { data: courses, error } = await useFetch(`${config.public.apiUrl}/cursos/?format=json`);
 
 if (error.value) {
   console.error('Erro ao buscar cursos:', error.value.message);

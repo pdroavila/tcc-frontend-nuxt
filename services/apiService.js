@@ -62,9 +62,9 @@ export const buscarCEP = async (cep) => {
   }
 };
 
-export const fetchPolos = async (curso_id) => {
+export const fetchPolos = async (curso_id, config) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/cursos/${curso_id}/polos/`);
+    const response = await fetch(`${config.public.apiUrl}/cursos/${curso_id}/polos/`);
     const data = await response.json();
 
     if (data.erro) {
@@ -82,9 +82,9 @@ export const fetchPolos = async (curso_id) => {
   }
 }
 
-export const sendInscricao = async (inscricao) => {
+export const sendInscricao = async (inscricao, config) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/inscricao/`, {
+    const response = await fetch(`${config.public.apiUrl}/inscricao/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +93,6 @@ export const sendInscricao = async (inscricao) => {
     });
 
     if (response.status !== 201) {
-      console.log('aqui pedro')
       const errorData = await response.json();
 
       console.log(errorData)

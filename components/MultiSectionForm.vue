@@ -57,6 +57,7 @@ const currentSection = ref(0);
 const currentStep = ref(0);
 const formSubmitted = ref(false);
 const formData = ref({ ...initialFormData }); // Define formData inicial
+const config = useRuntimeConfig()
 
 const resetFormData = () => {
   formData.value = { ...initialFormData }; // Reset formData para seu estado inicial
@@ -116,7 +117,7 @@ const submitForm = async () => {
       "curso": route.params.id
     };
     
-    const respostaInscricao = await sendInscricao(inscricao);
+    const respostaInscricao = await sendInscricao(inscricao, config);
 
     formSubmitted.value = true;
   } catch (error) {

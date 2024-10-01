@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
   components: true,
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.API_URL,  // Variável exposta no lado do cliente
+    }
+  },
   plugins: [
     '~/plugins/toast.ts', // Registrar o plugin toast
   ],

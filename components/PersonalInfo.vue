@@ -179,6 +179,7 @@ import FileUpload from "./FileUpload.vue";
 import { maskTelefone } from "~/utils/masks";
 import { fetchCountries, fetchPolos } from "~/services/apiService";
 
+const config = useRuntimeConfig()
 const route = useRoute();
 const props = defineProps({
   formData: Object,
@@ -198,7 +199,7 @@ onMounted(async () => {
   try {
     loadingCountries.value = true;
     countries.value = await fetchCountries();
-    poloOptions.value = await fetchPolos(route.params.id);
+    poloOptions.value = await fetchPolos(route.params.id, config);
   } catch (error) {
     countriesError.value =
       "Erro ao carregar países. Por favor, tente novamente.";
@@ -296,7 +297,7 @@ let isSelecting = false;
 
 const fetchCities = async (cityName) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/buscar-cidades?nome=${cityName}`);
+    const response = await fetch(`${config.public.apiUrl}/buscar-cidades?nome=${cityName}`);
     if (response.ok) {
       const data = await response.json();
       suggestions.value = data;
