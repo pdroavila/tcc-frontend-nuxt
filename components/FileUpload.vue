@@ -40,7 +40,7 @@
               type="file"
               class="sr-only"
               :accept="accept"
-              @change="handleFileUpload"
+              @change="handleFileUpload($event, tipo)"
               :required="required && !fileUploaded"
             />
           </label>
@@ -66,6 +66,8 @@ const props = defineProps({
   modelValue: [File, null],
   required: Boolean,
   accept: String,
+  tipo: String,
+  formData: [Object, null]
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -87,23 +89,42 @@ watch(
   { immediate: true }
 );
 
-const handleFileUpload = (event) => {
+const handleFileUpload = (event, type) => {
   const file = event.target.files[0];
-  processFile(file);
+  processFile(file, type); // Passa o tipo de arquivo (cpf ou rg) para o processFile
 };
 
-const processFile = (file) => {
+const processFile = (file, type) => {
   if (file) {
-    if (file.size <= 10 * 1024 * 1024) {
-      // 10MB limit
+    if (file.size <= 10 * 1024 * 1024) { // Limite de 10MB para o arquivo
       fileName.value = file.name;
       fileUploaded.value = true;
-      emit("update:modelValue", file);
+      
+      const reader = new FileReader();
+      
+      // Ler o arquivo como Data URL (base64)
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        console.log("Base64 do arquivo:", base64String);
+
+        // Verifica o tipo de arquivo e coloca no campo correto
+        if (type === 'cpf') {
+          props.formData.anexo_cpf = base64String;  // Atribui a base64 no campo anexo_cpf
+        } else if (type === 'rg') {
+          props.formData.anexo_rg = base64String;   // Atribui a base64 no campo anexo_rg
+        }
+
+        emit("update:modelValue", base64String);
+      };
+      
+      reader.readAsDataURL(file); // Inicia a leitura do arquivo
     } else {
       alert("O arquivo é muito grande. O tamanho máximo permitido é 10MB.");
     }
   }
 };
+
+
 
 const dragover = (event) => {
   isDragging.value = true;

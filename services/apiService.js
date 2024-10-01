@@ -61,3 +61,52 @@ export const buscarCEP = async (cep) => {
     throw error;
   }
 };
+
+export const fetchPolos = async (curso_id) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/cursos/${curso_id}/polos/`);
+    const data = await response.json();
+
+    if (data.erro) {
+      throw new Error("Erro ao buscar polos");
+    }
+
+    data.map((polo) => {
+      polo.label = polo.nome;
+    })
+
+    return data;
+  } catch (error) {
+    console.error("Erro aos buscar os polos:", error);
+    throw error;
+  }
+}
+
+export const sendInscricao = async (inscricao) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/inscricao/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inscricao),
+    });
+
+    if (response.status !== 201) {
+      console.log('aqui pedro')
+      const errorData = await response.json();
+
+      console.log(errorData)
+      throw new Error(errorData.error || 'Erro desconhecido ao enviar inscrição');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+
+  } catch (error) {
+    console.error("Erro ao enviar a inscricao: ", error);
+    throw error;
+  }
+};

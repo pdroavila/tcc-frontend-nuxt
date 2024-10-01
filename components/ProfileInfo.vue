@@ -11,27 +11,27 @@
         />
         <FormField
           label="Portador de necessidades especiais?"
-          v-model="formData.necessidadesEspeciais"
+          v-model="formData.portador_necessidades_especiais"
           type="select"
           :options="simNaoOptions"
           required
         />
         <FormField
           label="Estado Civil"
-          v-model="formData.estadoCivil"
+          v-model="formData.estado_civil"
           type="select"
           :options="estadoCivilOptions"
           required
         />
         <FormField
-          v-if="formData.necessidadesEspeciais === 'sim'"
+          v-if="formData.portador_necessidades_especiais == 1"
           label="Se sim, quais?"
           placeholder="Descreva a necessidade especial"
-          v-model="formData.quaisNecessidades"
+          v-model="formData.necessidade_especial"
         />
         <FormField
           label="Renda per capita"
-          v-model="formData.rendaPerCapita"
+          v-model="formData.renda_per_capita"
           type="select"
           :options="rendaOptions"
           required

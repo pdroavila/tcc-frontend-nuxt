@@ -25,6 +25,7 @@
             label="Envie o histórico escolar"
             v-model="formData.historicoEscolar"
             accept="image/png, image/jpeg, image/jpg, .pdf"
+            tipo='historico'
             required
           />
         </div>
