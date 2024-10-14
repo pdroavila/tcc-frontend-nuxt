@@ -37,7 +37,10 @@
           required
         />
         <!-- Dropdown de sugestões -->
-        <ul v-if="suggestions.length > 0" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto w-full">
+        <ul
+          v-if="suggestions.length > 0"
+          class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto w-full"
+        >
           <li
             v-for="(suggestion, index) in suggestions"
             :key="index"
@@ -141,6 +144,8 @@
         accept="image/png, image/jpeg, image/jpg, .pdf"
         :formData="formData"
         tipo="cpf"
+        :isClickable="cpf_image" 
+        :url="cpf_url"
         required
       />
       <FileUpload
@@ -149,6 +154,8 @@
         accept="image/png, image/jpeg, image/jpg, .pdf"
         :formData="formData"
         tipo="rg"
+        :isClickable="rg_image" 
+        :url="rg_url"
         required
       />
     </div>
@@ -195,11 +202,39 @@ const documentoValido = ref(true);
 const errorDataNascimento = ref("");
 const poloOptions = ref([]);
 
+const cpf_image = ref(false);
+const cpf_url = ref(null)
+const rg_image = ref(false);
+const rg_url = ref(null)
+
 onMounted(async () => {
   try {
     loadingCountries.value = true;
     countries.value = await fetchCountries();
-    poloOptions.value = await fetchPolos(route.params.id, config);
+    
+    if(props.formData.polo_options){
+      poloOptions.value = props.formData.polo_options;
+      
+      poloOptions.value.map((polo) => {
+        if(polo.id == props.formData.polo_ofertante){
+          props.formData.polo_ofertante = polo.label
+        }
+      })
+
+    }else{
+      poloOptions.value = await fetchPolos(route.params.id, config);
+    }
+
+    if(props.formData.anexo_cpf && !isBase64(props.formData.anexo_cpf)){
+      cpf_image.value = true;
+      cpf_url.value = `${config.public.apiUrl}/media-image/${props.formData.anexo_cpf}`;
+    }
+
+    if(props.formData.anexo_rg  && !isBase64(props.formData.anexo_rg)){
+      rg_image.value = true;
+      rg_url.value = `${config.public.apiUrl}/media-image/${props.formData.anexo_rg}`;
+    }
+
   } catch (error) {
     countriesError.value =
       "Erro ao carregar países. Por favor, tente novamente.";
@@ -288,9 +323,6 @@ const handleSubmit = (event) => {
   }
 };
 
-
-
-
 // Função para buscar cidades pela API
 const suggestions = ref([]);
 let isSelecting = false;
@@ -332,6 +364,25 @@ watch(
     }
   }
 );
+
+const isBase64 = (str) => {
+// Remover o prefixo se houver
+const base64PrefixPattern = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+)?;base64,/;
+  if (base64PrefixPattern.test(str)) {
+    str = str.replace(base64PrefixPattern, '');
+  }
+
+  // Verifica se a string não é vazia e segue o comprimento múltiplo de 4
+  if (!str || str.trim() === '' || str.length % 4 !== 0) {
+    return false;
+  }
+
+  // Utiliza uma expressão regular para validar o padrão do Base64
+  const base64Regex = /^[A-Za-z0-9+/]+={0,2}$/;
+
+  return base64Regex.test(str);
+}
+
 </script>
 
 <style scoped>

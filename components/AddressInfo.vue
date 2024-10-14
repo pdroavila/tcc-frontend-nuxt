@@ -4,7 +4,7 @@
       <div class="sm:col-span-2">
         <FormField
           label="Você mora em área urbana ou rural?"
-          v-model="formData.areaUrbanaRural"
+          v-model="formData.area"
           type="select"
           :options="areaOptions"
           required
@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, onMounted } from "vue";
+import { defineProps, defineEmits, ref, onMounted, watch } from "vue";
 import FormField from "./FormField.vue";
 import { maskCEP } from "~/utils/masks";
 import { fetchEstados, fetchCidades, buscarCEP } from "~/services/apiService";
@@ -99,8 +99,8 @@ const props = defineProps({
 const emit = defineEmits(["next", "previous"]);
 
 const areaOptions = ref([
-  { value: "urbana", label: "Urbana" },
-  { value: "rural", label: "Rural" },
+  { value: 0, label: "Urbana" },
+  { value: 1, label: "Rural" },
 ]);
 
 const estadoOptions = ref([]);
@@ -122,6 +122,41 @@ const handleCEPInput = async (event) => {
   }
   maskCEP(event);
 };
+
+watch(
+  () => props.formData.estado,
+  async (newValue) => {
+    cidadeOptions.value = await fetchCidades(newValue);
+  }
+);
+
+onMounted(async () => {
+  if(props.formData.cep){
+    let cep = props.formData.cep;
+    
+    if (cep.length === 8) {
+      try {
+        const data = await buscarCEP(cep);
+
+        if(data.logradouro)
+          props.formData.logradouro = data.logradouro;
+        
+        if(data.bairro)
+          props.formData.bairro = data.bairro;
+
+        if(data.uf)
+          props.formData.estado = data.uf ? data.uf : props.formData.estado;
+
+        cidadeOptions.value = await fetchCidades(data.uf);
+        props.formData.cidade = data.localidade;
+      } catch (error) {
+        console.error("Erro ao buscar CEP:", error);
+      }
+    }
+  }
+
+})
+
 
 const handleSubmit = (event) => {
   if (event.target.checkValidity()) {

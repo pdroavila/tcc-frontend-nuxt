@@ -109,3 +109,68 @@ export const sendInscricao = async (inscricao, config) => {
     throw error;
   }
 };
+
+export const fetchInscricoes = async (hash, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/candidatos/${hash}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+
+  } catch (error) {
+    console.error("Erro ao enviar a inscricao: ", error);
+    throw error;
+  }
+}
+
+
+export const fetchInscricao = async (inscricaoId, hash, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/inscricoes/${inscricaoId}/${hash}`);
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar a inscrição. Verifique o ID e tente novamente.');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro ao buscar a inscrição:', error);
+    throw new Error('Não foi possível carregar os dados da inscrição.');
+  }
+};
+
+export const updateInscricao = async (inscricao, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/inscricao/alterar/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inscricao),
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+
+      console.log(errorData)
+      throw new Error(errorData.error || 'Erro desconhecido ao atualizar inscrição');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+
+  } catch (error) {
+    console.error("Erro ao atualizar a inscricao: ", error);
+    throw error;
+  }
+}

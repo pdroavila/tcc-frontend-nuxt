@@ -14,7 +14,25 @@
       }"
     >
       <div class="space-y-1 text-center">
+          <a v-if="isClickable" :href="url" target="_blank" rel="noopener noreferrer">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400 cursor-pointer hover:text-gray-600"
+            stroke="currentColor"
+            fill="none"
+            viewBox="0 0 48 48"
+            aria-hidden="true"
+          >
+            <path
+              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+
         <svg
+          v-else
           class="mx-auto h-12 w-12 text-gray-400"
           stroke="currentColor"
           fill="none"
@@ -67,7 +85,15 @@ const props = defineProps({
   required: Boolean,
   accept: String,
   tipo: String,
-  formData: [Object, null]
+  formData: [Object, null],
+  isClickable: {
+    type: Boolean,
+    default: false,
+  },
+  url: {
+    type: String,
+    default: '', // Pode ser definido como uma URL específica
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -75,19 +101,20 @@ const emit = defineEmits(["update:modelValue"]);
 const fileName = ref("");
 const isDragging = ref(false);
 const fileUploaded = ref(false);
+const isClickable = ref(props.isClickable);
 
 watch(
   () => props.modelValue,
   (newValue) => {
     fileUploaded.value = !!newValue;
-    if (newValue) {
-      fileName.value = newValue.name;
-    } else {
-      fileName.value = "";
-    }
   },
   { immediate: true }
 );
+
+onMounted(() => {
+  if(props.formData.alteracao)
+    fileUploaded.value = isClickable.value;
+})
 
 const handleFileUpload = (event, type) => {
   const file = event.target.files[0];
@@ -105,7 +132,6 @@ const processFile = (file, type) => {
       // Ler o arquivo como Data URL (base64)
       reader.onloadend = () => {
         const base64String = reader.result;
-        console.log("Base64 do arquivo:", base64String);
 
         // Verifica o tipo de arquivo e coloca no campo correto
         if (type === 'cpf') {
@@ -114,6 +140,7 @@ const processFile = (file, type) => {
           props.formData.anexo_rg = base64String;   // Atribui a base64 no campo anexo_rg
         }
 
+        isClickable.value = false;
         emit("update:modelValue", base64String);
       };
       
@@ -123,8 +150,6 @@ const processFile = (file, type) => {
     }
   }
 };
-
-
 
 const dragover = (event) => {
   isDragging.value = true;

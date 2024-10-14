@@ -4,6 +4,9 @@
     <div class="text-center">
       <h2 class="text-xl font-bold mb-2">{{ course.nome }}</h2>
       <p class="text-gray-600">{{ course.descricao }}</p>
+      <span v-if="course.status !== undefined && course.status !== null" class="text-gray-600">
+        {{ course.status === 0 ? 'Em análise' : (course.status === 1 ? 'Deferida' : 'Indeferida') }}
+      </span>
     </div>
   </div>
 </template>

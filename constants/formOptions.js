@@ -106,8 +106,8 @@ export const generoOptions = [
 ];
 
 export const simNaoOptions = [
-  { value: 1, label: "Sim" },
   { value: 0, label: "Não" },
+  { value: 1, label: "Sim" },
 ];
 
 export const estadoCivilOptions = [
@@ -178,19 +178,19 @@ export const estadoOptions = [
 ];
 
 export const tipoEscolaOptions = [
-  { value: "publica", label: "Pública" },
-  { value: "privada", label: "Privada" },
+  { value: 0, label: "Pública" },
+  { value: 1, label: "Privada" },
 ];
 
 export const escolaridadeOptions = [
-  { value: "fundamental_i_completo", label: "Fundamental I - Completo (1º a 5º)" },
-  { value: "fundamental_i_incompleto", label: "Fundamental I - Incompleto (1º a 5º)" },
-  { value: "fundamental_ii_completo", label: "Fundamental II - Completo (6º a 9º)" },
-  { value: "fundamental_ii_incompleto", label: "Fundamental II - Incompleto (6º a 9º)" },
-  { value: "medio_completo", label: "Médio - Completo" },
-  { value: "medio_incompleto", label: "Médio - Incompleto" },
-  { value: "superior_completo", label: "Superior - Completo" },
-  { value: "superior_incompleto", label: "Superior - Incompleto" },
-  { value: "pos_graduacao_completo", label: "Pós-graduação - Completo" },
-  { value: "pos_graduacao_incompleto", label: "Pós-graduação - Incompleto" },
+  { value: 0, label: "Fundamental I - Completo (1º a 5º)" },
+  { value: 1, label: "Fundamental I - Incompleto (1º a 5º)" },
+  { value: 2, label: "Fundamental II - Completo (6º a 9º)" },
+  { value: 3, label: "Fundamental II - Incompleto (6º a 9º)" },
+  { value: 4, label: "Médio - Completo" },
+  { value: 5, label: "Médio - Incompleto" },
+  { value: 6, label: "Superior - Completo" },
+  { value: 7, label: "Superior - Incompleto" },
+  { value: 8, label: "Pós-graduação - Completo" },
+  { value: 9, label: "Pós-graduação - Incompleto" },
 ];
