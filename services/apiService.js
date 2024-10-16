@@ -174,3 +174,32 @@ export const updateInscricao = async (inscricao, config) => {
     throw error;
   }
 }
+
+export const loginAdmin = async (loginData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginData),
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.error || 'Erro desconhecido ao realizar login');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    localStorage.setItem('access_token', data.access);
+    localStorage.setItem('refresh_token', data.refresh);
+    return data;
+  } catch (error) {
+    console.error("Erro ao realizar login: ", error);
+    throw error;
+  }
+};
+

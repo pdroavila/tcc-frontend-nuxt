@@ -21,7 +21,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import Loader from '~/components/Loader.vue';
+import { useAuth } from '~/composables/useAuth';
 
+const { isAuthenticated } = useAuth();
 const config = useRuntimeConfig();
 const { data: courses, error, pending } = useFetch(`${config.public.apiUrl}/cursos/?format=json`);
 const router = useRouter();
@@ -30,10 +32,25 @@ function navigateToForm(courseId) {
   router.push(`/inscricao/${courseId}`);
 }
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   const hash = localStorage.getItem('auth_hash');
   if(hash){
     return router.push(`/acesso/${hash}`);
   }
 })
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    router.push('/admin'); // Redireciona se já estiver autenticado
+  }
+});
+
+// Observa mudanças no estado de autenticação, útil se a verificação demorar
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    router.push('/admin');
+  }
+});
+
+
 </script>

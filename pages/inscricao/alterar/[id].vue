@@ -28,7 +28,6 @@
 
   onMounted(async () => {
     try {
-      console.log(authHash.value)
         isLoading.value = true;
         const response = await fetchInscricao(inscricaoId,authHash.value,config);
         initialData.value = response;  
