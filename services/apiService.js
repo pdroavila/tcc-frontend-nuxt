@@ -203,3 +203,54 @@ export const loginAdmin = async (loginData, config) => {
   }
 };
 
+export const recuperarSenha = async (email, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/recuperar-senha/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.error || 'Erro desconhecido ao solicitar recuperação de senha');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar recuperação de senha: ', error);
+  }
+};
+
+export const alterarSenha = async (payload, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/alterar-senha/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify( payload ),
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao solicitar a alteração de senha');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar a alteração de senha');
+  }
+};

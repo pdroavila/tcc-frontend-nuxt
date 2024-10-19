@@ -24,6 +24,7 @@
             <button 
               type="submit" 
               class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+              :disabled="sending" 
             >
               Enviar
             </button>
@@ -33,20 +34,30 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    data() {
-      return {
-        email: ''
-      }
-    },
-    methods: {
-      handleForgotPassword() {
-        // Lógica para enviar e-mail de recuperação de senha
-        console.log('Enviando e-mail de recuperação para', this.email)
-        // Após enviar, você pode fechar o modal
-        this.$emit('close')
-      }
+  <script setup>
+  import { ref } from 'vue'
+  import { recuperarSenha } from "~/services/apiService";
+  import { useToast } from "vue-toastification";
+
+  
+  const toast = useToast();
+  const email = ref('')
+  const config = useRuntimeConfig();
+  const sending = ref(false);
+  
+  const emit = defineEmits(['close'])
+  
+  const handleForgotPassword = async () => {
+    try{
+      sending.value = true;
+      const response = await recuperarSenha(email.value, config)
+      toast.success(response.message);
+      emit('close')
+    }catch(error){
+      toast.error(error)
+    }finally{
+      sending.value = false;
     }
   }
   </script>
+  

@@ -14,7 +14,7 @@ onBeforeMount(() => {
     }
 })
 
-onMounted(async () => {
-    await redirectIfAuthenticated();
+onMounted( () => {
+    redirectIfAuthenticated();
 })
 </script>

@@ -11,7 +11,7 @@
     if(authHash){
             logout();
         }
-        // protectRoute(config);
+        protectRoute();
 
     })
 

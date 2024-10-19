@@ -73,16 +73,16 @@ export function useAuth() {
   };
 
     // Função para proteger as rotas
-    const protectRoute = () => {
-      checkAuth();
+    const protectRoute = async () => {
+      await checkAuth();
       if (!isAuthenticated.value) {
         router.push('/admin/login'); // Redireciona para a rota de login se não estiver autenticado
       }
     };
   
     // Função para redirecionar para /admin se o token já estiver setado ao acessar /admin/login
-    const redirectIfAuthenticated = () => {
-      checkAuth();
+    const redirectIfAuthenticated = async () => {
+      await checkAuth();
       if (isAuthenticated.value) {
         router.push('/admin'); // Redireciona para o painel de admin se já estiver autenticado
       }
