@@ -196,6 +196,7 @@ export const loginAdmin = async (loginData, config) => {
 
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    localStorage.setItem('user_id', data.user_id)
     return data;
   } catch (error) {
     console.error("Erro ao realizar login: ", error);

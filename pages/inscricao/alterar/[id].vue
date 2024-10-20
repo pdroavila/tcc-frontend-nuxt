@@ -28,6 +28,7 @@
 
   onMounted(async () => {
     try {
+        checkAuthHash();
         isLoading.value = true;
         const response = await fetchInscricao(inscricaoId,authHash.value,config);
         initialData.value = response;  

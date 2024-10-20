@@ -41,14 +41,14 @@ onBeforeMount(async () => {
 
 onMounted(() => {
   if (isAuthenticated.value) {
-    router.push('/admin'); // Redireciona se já estiver autenticado
+    router.push('/admin/dashboard'); // Redireciona se já estiver autenticado
   }
 });
 
 // Observa mudanças no estado de autenticação, útil se a verificação demorar
 watch(isAuthenticated, (newValue) => {
   if (newValue) {
-    router.push('/admin');
+    router.push('/admin/dashboard');
   }
 });
 

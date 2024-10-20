@@ -29,13 +29,13 @@ export function useAuth() {
   const logoutAdmin = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user_id')
     isAuthenticated.value = false;
   };
 
   // Verifica se o token de admin está válido
   const checkAuth = async () => {
     const accessToken = localStorage.getItem('access_token');
-
     if (!accessToken) {
       isAuthenticated.value = false;
       return false;
@@ -84,7 +84,7 @@ export function useAuth() {
     const redirectIfAuthenticated = async () => {
       await checkAuth();
       if (isAuthenticated.value) {
-        router.push('/admin'); // Redireciona para o painel de admin se já estiver autenticado
+        router.push('/admin/dashboard'); // Redireciona para o painel de admin se já estiver autenticado
       }
     };
 
@@ -110,10 +110,64 @@ export function useAuth() {
       toast.error('Sua sessão expirou, por favor faça login novamente.');
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user_id')
       router.push('/admin/login'); // Redireciona para a página de login
       return false;
     }
   };
+
+  const verifyScreenAccess = async (route) => {
+    const accessToken = localStorage.getItem('access_token');
+    const userId = localStorage.getItem('user_id');
+
+    if (!accessToken || !userId) {
+      toast.error('Sessão inválida. Por favor, faça login novamente.');
+      router.push('/admin/login');
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${config.public.apiUrl}/admin/verificar-acesso/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ rota: route, usuario_id: userId }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        if (data.tem_acesso) {
+          return true;
+        } else {
+          toast.error('Você não tem permissão para acessar esta página.');
+          router.push('/admin/dashboard'); // Ou qualquer outra rota padrão
+          return false;
+        }
+      } else if (response.status === 401) {
+        // Token expirado, tenta renovar
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+          const refreshed = await refreshAccessToken(refreshToken);
+          if (refreshed) {
+            // Se o token foi renovado com sucesso, tenta verificar o acesso novamente
+            return verifyScreenAccess(route);
+          }
+        }
+        toast.error('Sua sessão expirou. Por favor, faça login novamente.');
+        router.push('/admin/login');
+        return false;
+      } else {
+        throw new Error('Falha ao verificar acesso');
+      }
+    } catch (error) {
+      console.error('Erro ao verificar acesso à tela:', error);
+      toast.error('Ocorreu um erro ao verificar suas permissões.');
+      return false;
+    }
+  };
+
 
   onMounted(async () => {
     await checkAuth(); // Verifica o token ao montar
@@ -127,6 +181,7 @@ export function useAuth() {
     logoutAdmin,
     refreshAccessToken,
     protectRoute,
-    redirectIfAuthenticated
+    redirectIfAuthenticated,
+    verifyScreenAccess
   };
 }

@@ -1,5 +1,5 @@
 <template>
-        <div v-if="isSubmitting" class="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-75 z-50">
+      <div v-if="isSubmitting" class="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-75 z-50">
           <Loader />
       </div>
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
@@ -82,7 +82,7 @@
     try {
       isSubmitting.value = true;
       const response = await loginAdmin(loginData, config);
-      router.push('/admin/');
+      router.push('/admin/dashboard');
     } catch (error) {
       toast.error(error.message || "Erro durante o login");
       console.error("Erro durante o login:", error);

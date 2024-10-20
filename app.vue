@@ -2,7 +2,7 @@
   <div>
     <Header />
     
-    <main class="mt-16 h-[calc(100vh-4rem)] overflow-auto"> 
+    <main class="mt-16 h-[calc(100vh-4rem)] overflow-auto bg-gray-100"> 
       <NuxtPage />
     </main>
   </div>
