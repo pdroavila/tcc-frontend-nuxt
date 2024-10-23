@@ -36,7 +36,7 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { recuperarSenha } from "~/services/apiService";
+  import { recoverSenha } from "~/services/apiService";
   import { useToast } from "vue-toastification";
 
   
@@ -50,7 +50,7 @@
   const handleForgotPassword = async () => {
     try{
       sending.value = true;
-      const response = await recuperarSenha(email.value, config)
+      const response = await recoverSenha(email.value, config)
       toast.success(response.message);
       emit('close')
     }catch(error){

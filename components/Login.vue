@@ -2,7 +2,7 @@
       <div v-if="isSubmitting" class="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-75 z-50">
           <Loader />
       </div>
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="flex items-center justify-center min-h-screen bg-gray-100" style="min-height: calc(-4rem + 100vh)">
     <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
       <h2 class="text-2xl font-bold text-center mb-6">Faça o login</h2>
       <form @submit.prevent="handleLogin">

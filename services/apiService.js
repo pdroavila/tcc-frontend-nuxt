@@ -48,7 +48,7 @@ export const fetchCidades = async (estado) => {
   }
 };
 
-export const buscarCEP = async (cep) => {
+export const getCEP = async (cep) => {
   try {
     const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const data = await response.json();
@@ -204,7 +204,7 @@ export const loginAdmin = async (loginData, config) => {
   }
 };
 
-export const recuperarSenha = async (email, config) => {
+export const recoverSenha = async (email, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/recuperar-senha/`, {
       method: 'POST',
@@ -230,7 +230,7 @@ export const recuperarSenha = async (email, config) => {
   }
 };
 
-export const alterarSenha = async (payload, config) => {
+export const updateSenha = async (payload, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/alterar-senha/`, {
       method: 'POST',
@@ -255,3 +255,125 @@ export const alterarSenha = async (payload, config) => {
     throw new Error('Erro ao solicitar a alteração de senha');
   }
 };
+
+export const getCursos = async (filters, config) => {
+  try {
+
+    const params = new URLSearchParams()
+    if (filters.nome) params.append('nome', filters.nome)
+    if (filters.dataInicial) params.append('data_inicial', filters.dataInicial)
+    if (filters.dataFinal) params.append('data_final', filters.dataFinal)
+
+    const response = await fetch(`${config.public.apiUrl}/cursos/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao solicitar os cursos');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar os cursos');
+  }
+}
+
+export const postCursos = async (formData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/curso-novo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:  JSON.stringify({
+        nome: formData.value.nome,
+        descricao: formData.value.descricao,
+        prazo_inscricoes: formData.value.prazo_inscricoes,
+        polos: formData.value.polos
+      }),
+    });
+
+    if (response.status !== 201) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao criar o curso');
+    }
+
+    let data = await response.json();
+    console.log("Resposta da API:", data);
+
+    data.message = "Curso criado com sucesso";
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar a criação do curso');
+  }
+}
+
+export const getPolos = async (config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/polos/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao solicitar os polos');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar os polos');
+  }
+}
+
+export const updateCurso = async (cursoId, formData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/cursos/${cursoId}/update/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:  JSON.stringify({
+        nome: formData.value.nome,
+        descricao: formData.value.descricao,
+        prazo_inscricoes: formData.value.prazo_inscricoes,
+        polos: formData.value.polos
+      }),
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao atualizar o curso');
+    }
+
+    let data = await response.json();
+    console.log("Resposta da API:", data);
+
+    data.message = "Curso atualizado com sucesso";
+    
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar a atualização do curso');
+  }
+}

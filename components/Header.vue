@@ -5,8 +5,14 @@
         <img src="/images/logo_fic.png" alt="Logotipo" class="h-12 w-auto cursor-pointer" @click="navigateToForm()" />
       </div>
       <div v-if="authCandidato || isAuthenticated" class="font-bold text-green-700 flex gap-6">
-        <button @click="courses" v-if="!isAuthenticated">
+        <button @click="meus_cursos" v-if="!isAuthenticated">
           MEUS CURSOS
+        </button>
+        <button @click="dashboard" v-if="isAuthenticated">
+          DASHBOARD
+        </button>
+        <button @click="cursos" v-if="isAuthenticated">
+          CURSOS
         </button>
         <button @click="sair">
           SAIR
@@ -29,9 +35,17 @@ const navigateToForm = () => {
   router.push(`/`);
 };
 
-const courses = () => {
+const meus_cursos = () => {
   router.push(`/acesso/${authHash.value}`);
 };
+
+const dashboard = () => {
+  router.push(`/admin/dashboard`);
+}
+
+const cursos = () => {
+  router.push(`/admin/cursos/`);
+}
 
 const sair = () => {
   if (isAuthenticated.value) {

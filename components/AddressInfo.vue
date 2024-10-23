@@ -89,7 +89,7 @@
 import { defineProps, defineEmits, ref, onMounted, watch } from "vue";
 import FormField from "./FormField.vue";
 import { maskCEP } from "~/utils/masks";
-import { fetchEstados, fetchCidades, buscarCEP } from "~/services/apiService";
+import { fetchEstados, fetchCidades, getCEP } from "~/services/apiService";
 
 const props = defineProps({
   formData: Object,
@@ -110,7 +110,7 @@ const handleCEPInput = async (event) => {
   const cep = event.target.value.replace(/\D/g, "");
   if (cep.length === 8) {
     try {
-      const data = await buscarCEP(cep);
+      const data = await getCEP(cep);
       props.formData.logradouro = data.logradouro;
       props.formData.bairro = data.bairro;
       props.formData.estado = data.uf;
@@ -136,7 +136,7 @@ onMounted(async () => {
     
     if (cep.length === 8) {
       try {
-        const data = await buscarCEP(cep);
+        const data = await getCEP(cep);
 
         if(data.logradouro)
           props.formData.logradouro = data.logradouro;

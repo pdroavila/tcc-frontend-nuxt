@@ -56,7 +56,7 @@
   import { useToast } from "vue-toastification"
   import { useRuntimeConfig } from '#app'
   import { useRouter } from 'vue-router'
-  import { alterarSenha } from '~/services/apiService'
+  import { updateSenha } from '~/services/apiService'
   import { useRoute } from 'nuxt/app';
 
   const route = useRoute();
@@ -79,7 +79,7 @@
     try {
       isSubmitting.value = true
       const payload = { nova_senha: nova_senha.value, token: token }
-      await alterarSenha(payload, config)
+      await updateSenha(payload, config)
       toast.success('Senha alterada com sucesso!')
       router.push('/admin/login')
     } catch (error) {
