@@ -92,6 +92,7 @@
   import { ref, reactive } from 'vue'
   import { getCursos } from "~/services/apiService";
   import { useRouter } from 'vue-router';
+  const { verifyScreenAccess } = useAuth();
 
   const router = useRouter();
   const loading = ref(true);
@@ -130,7 +131,8 @@
     router.push(`/admin/cursos/atualizar/${id}`);
   }
   
-  onMounted(() => {
+  onMounted(async () => {
     buscarCursos()
+    await verifyScreenAccess("/admin/cursos");
   })
   </script>

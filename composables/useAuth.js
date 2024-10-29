@@ -141,7 +141,7 @@ export function useAuth() {
         if (data.tem_acesso) {
           return true;
         } else {
-          toast.error('Você não tem permissão para acessar esta página.');
+          toast.error('Você não tem permissão para acessar esta página');
           router.push('/admin/dashboard'); // Ou qualquer outra rota padrão
           return false;
         }
@@ -155,7 +155,7 @@ export function useAuth() {
             return verifyScreenAccess(route);
           }
         }
-        toast.error('Sua sessão expirou. Por favor, faça login novamente.');
+        toast.error('Sua sessão expirou. Por favor, faça login novamente');
         router.push('/admin/login');
         return false;
       } else {
@@ -163,7 +163,52 @@ export function useAuth() {
       }
     } catch (error) {
       console.error('Erro ao verificar acesso à tela:', error);
-      toast.error('Ocorreu um erro ao verificar suas permissões.');
+      toast.error('Ocorreu um erro ao verificar suas permissões');
+      return false;
+    }
+  };
+
+  const verifyHeaderAccess = async (route) => {
+    const accessToken = localStorage.getItem('access_token');
+    const userId = localStorage.getItem('user_id');
+
+    if (!accessToken || !userId) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${config.public.apiUrl}/admin/verificar-acesso/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ rota: route, usuario_id: userId }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        if (data.tem_acesso) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (response.status === 401) {
+        // Token expirado, tenta renovar
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+          const refreshed = await refreshAccessToken(refreshToken);
+          if (refreshed) {
+            // Se o token foi renovado com sucesso, tenta verificar o acesso novamente
+            return verifyHeaderAccess(route);
+          }
+        }
+        return false;
+      } else {
+        throw new Error('Falha ao verificar acesso');
+      }
+    } catch (error) {
+      console.error('Erro ao verificar acesso à tela:', error);
       return false;
     }
   };
@@ -182,6 +227,7 @@ export function useAuth() {
     refreshAccessToken,
     protectRoute,
     redirectIfAuthenticated,
-    verifyScreenAccess
+    verifyScreenAccess,
+    verifyHeaderAccess
   };
 }

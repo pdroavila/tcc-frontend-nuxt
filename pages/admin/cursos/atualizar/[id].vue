@@ -64,7 +64,7 @@
           <div class="flex justify-end space-x-4">
             <button
               type="button"
-              @click="$router.push('/cursos')"
+              @click="$router.push('/admin/cursos')"
               class="px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-50"
             >
               Cancelar
@@ -86,6 +86,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import { getPolos, updateCurso } from "~/services/apiService";
   import { useToast } from "vue-toastification";
+  const { verifyScreenAccess } = useAuth();
 
   const toast = useToast();
   const route = useRoute()
@@ -149,6 +150,7 @@
     try {
         loading.value = true;
         await Promise.all([buscarCurso(), buscarPolos()])
+        await verifyScreenAccess("/admin/cursos");
     } finally {
         loading.value = false
     }

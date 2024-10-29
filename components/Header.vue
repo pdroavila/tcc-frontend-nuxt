@@ -11,8 +11,14 @@
         <button @click="dashboard" v-if="isAuthenticated">
           DASHBOARD
         </button>
-        <button @click="cursos" v-if="isAuthenticated">
+        <button @click="cursos" v-if="isAuthenticated && acessCourse">
           CURSOS
+        </button>
+        <button @click="usuarios" v-if="isAuthenticated && accessUser">
+          USUÁRIOS
+        </button>
+        <button @click="inscricoes" v-if="isAuthenticated && accessInscription">
+          INSCRIÇÕES
         </button>
         <button @click="sair">
           SAIR
@@ -26,7 +32,12 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '~/composables/useAuth';
-const { isAuthenticated, authHash, checkAuthHash, logout, logoutAdmin } = useAuth();
+
+const { isAuthenticated, authHash, checkAuthHash, logout, logoutAdmin, verifyHeaderAccess } = useAuth();
+
+const acessCourse = ref(false);
+const accessUser = ref(false);
+const accessInscription = ref(false);
 
 const authCandidato = computed(() => authHash.value !== null);
 const router = useRouter();
@@ -47,6 +58,15 @@ const cursos = () => {
   router.push(`/admin/cursos/`);
 }
 
+const usuarios = () => {
+  router.push(`/admin/usuarios/`);
+}
+
+const inscricoes = () => {
+  router.push(`/admin/inscricoes/`);
+
+}
+
 const sair = () => {
   if (isAuthenticated.value) {
     logoutAdmin();
@@ -55,4 +75,29 @@ const sair = () => {
   }
   router.push(`/`);
 };
+
+watch(isAuthenticated, async (newValue) => {
+  if (newValue) {
+    const adminAccess = await verifyHeaderAccess("/admin/cursos");
+    acessCourse.value = adminAccess;
+
+    const usersAccess = await verifyHeaderAccess("/admin/usuarios");
+    accessUser.value = usersAccess;
+
+    const inscriptionAccess = await verifyHeaderAccess("/admin/inscricoes");
+    accessInscription.value = inscriptionAccess;
+  }
+});
+
+onMounted(async () => {
+  const adminAccess = await verifyHeaderAccess("/admin/cursos");
+  acessCourse.value = adminAccess;
+
+  const usersAccess = await verifyHeaderAccess("/admin/usuarios");
+  accessUser.value = usersAccess;
+
+  const inscriptionAccess = await verifyHeaderAccess("/admin/inscricoes");
+  accessInscription.value = inscriptionAccess;
+});
+
 </script>

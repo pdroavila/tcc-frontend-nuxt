@@ -62,7 +62,7 @@
         <div class="flex justify-end space-x-4">
           <button
             type="button"
-            @click="$router.push('/cursos')"
+            @click="$router.push('/admin/cursos')"
             class="px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-50"
           >
             Cancelar
@@ -84,6 +84,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { postCursos, getPolos } from "~/services/apiService";
 import { useToast } from "vue-toastification";
+const { verifyScreenAccess } = useAuth();
 
 const loading = ref(true);
 const toast = useToast();
@@ -121,7 +122,8 @@ const salvarCurso = async () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   buscarPolos()
+  await verifyScreenAccess("/admin/cursos");
 })
 </script>

@@ -147,6 +147,44 @@ export const fetchInscricao = async (inscricaoId, hash, config) => {
   }
 };
 
+export const rejectInscription = async (id, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/rejeitar/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }});
+
+    if (!response.ok) {
+      throw new Error('Erro ao rejeitar a inscrição.');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro ao rejeitar a inscrição:', error);
+    throw new Error('Não foi possível rejeitar da inscrição.');
+  }
+};
+
+export const approveInscription = async (id, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/aprovar/`, {
+      method: 'POST',
+    })
+
+    if (!response.ok) {
+      throw new Error('Erro ao aprovar a inscrição.');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro ao aprovar a inscrição:', error);
+    throw new Error('Não foi possível aprovar os dados da inscrição.');
+  }
+};
+
 export const updateInscricao = async (inscricao, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/inscricao/alterar/`, {
@@ -375,5 +413,163 @@ export const updateCurso = async (cursoId, formData, config) => {
   } catch (error) {
     console.log(error);
     throw new Error('Erro ao solicitar a atualização do curso');
+  }
+}
+
+export const getAdminUsers = async (filters, config) => {
+  try {
+    const queryParams = new URLSearchParams({
+      ...(filters.nome && { nome: filters.nome }),
+      ...(filters.email && { email: filters.email })
+    }).toString();
+
+    const response = await fetch(`${config.public.apiUrl}/admin/usuarios${queryParams ? `?${queryParams}` : ''}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao buscar usuários');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar usuários administradores');
+  }
+}
+// Buscar usuário específico
+export const getAdminUser = async (userId, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao buscar usuário');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar dados do usuário');
+  }
+}
+
+// Criar novo usuário admin
+export const createAdminUser = async (userData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/usuarios/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: userData.username,
+        email: userData.email,
+        password: userData.password,
+        nome_completo: userData.nome_completo,
+        telas: userData.telas
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao criar usuário');
+    }
+
+    const data = await response.json();
+    
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao criar usuário administrador');
+  }
+}
+
+// Atualizar usuário admin
+export const updateAdminUser = async (userId, userData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${userId}/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...(userData.email && { email: userData.email }),
+        ...(userData.nome_completo && { nome_completo: userData.nome_completo }),
+        ...(userData.password && { password: userData.password }),
+        ...(typeof userData.ativo !== 'undefined' && { ativo: userData.ativo }),
+        ...(userData.telas && { telas: userData.telas })
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao atualizar usuário');
+    }
+
+    const data = await response.json();
+    data.message = "Usuário atualizado com sucesso";
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao atualizar usuário administrador');
+  }
+}
+
+
+export const getTelas = async (config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/telas`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao buscar telas');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar telas do sistema');
+  }
+}
+
+export const getInscricoes = async (filters, config, url) => {
+  try {
+    const urlBusca = url ? url : `${config.public.apiUrl}/admin/inscricoes`;
+
+    const queryString = new URLSearchParams(filters).toString();
+    const urlComFiltros = `${urlBusca}?${queryString}`;
+
+    const response = await fetch(urlComFiltros, {
+      method: 'GET',
+      params: filters,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao buscar inscricoes');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar inscricoes do sistema');
   }
 }
