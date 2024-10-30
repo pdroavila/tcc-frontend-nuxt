@@ -44,7 +44,8 @@
   <script setup>
   import { ref, onMounted, nextTick } from 'vue';
   import Chart from 'chart.js/auto';
-  
+  import { getGraficos } from "~/services/apiService"
+
   const loading = ref(true);
   const inscricoesChart = ref(null);
   const escolaChart = ref(null);
@@ -56,7 +57,8 @@
   const escolaridadeChart = ref(null);
   const charts = ref([]);
   const chartData = ref(null);
-  
+  const config = useRuntimeConfig()
+
   onMounted(async () => {
     await fetchData();
     await nextTick();
@@ -65,17 +67,7 @@
   
   const fetchData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/admin/graficos', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        }
-      });
-      if (!response.ok) {
-        throw new Error(`Erro HTTP! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await getGraficos(config);
       chartData.value = data;
     } catch (error) {
       console.error('Erro ao buscar dados:', error);

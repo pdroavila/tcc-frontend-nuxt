@@ -659,3 +659,46 @@ export const fetchHistoricoInscricao = async (id, config) => {
 
   return await response.json()
 }
+
+export const getGraficos = async (config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/graficos`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erro HTTP!");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar os dados do grafico do sistema');
+  }
+}
+
+export const getCidades = async (config, cityName) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/buscar-cidades?nome=${cityName}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erro HTTP!");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar cidades do sistema');
+  }
+}

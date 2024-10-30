@@ -184,7 +184,8 @@ import { ref, onMounted, watch } from "vue";
 import FormField from "./FormField.vue";
 import FileUpload from "./FileUpload.vue";
 import { maskTelefone } from "~/utils/masks";
-import { fetchCountries, fetchPolos } from "~/services/apiService";
+import { fetchCountries, fetchPolos, getCidades } from "~/services/apiService";
+import { useToast } from "vue-toastification";
 
 const config = useRuntimeConfig()
 const route = useRoute();
@@ -206,6 +207,7 @@ const cpf_image = ref(false);
 const cpf_url = ref(null)
 const rg_image = ref(false);
 const rg_url = ref(null)
+const toast = useToast();
 
 onMounted(async () => {
   try {
@@ -329,13 +331,11 @@ let isSelecting = false;
 
 const fetchCities = async (cityName) => {
   try {
-    const response = await fetch(`${config.public.apiUrl}/buscar-cidades?nome=${cityName}`);
-    if (response.ok) {
-      const data = await response.json();
-      suggestions.value = data;
-    }
+    const data = await getCidades(config, cityName);
+    suggestions.value = data;
   } catch (error) {
     console.error("Erro ao buscar cidades:", error);
+    toast.error(error)
   }
 };
 
