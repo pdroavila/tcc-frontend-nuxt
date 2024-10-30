@@ -92,7 +92,6 @@
   import { ref, reactive } from 'vue'
   import { getCursos } from "~/services/apiService";
   import { useRouter } from 'vue-router';
-  const { verifyScreenAccess } = useAuth();
 
   const router = useRouter();
   const loading = ref(true);
@@ -103,6 +102,8 @@
     dataInicial: '',
     dataFinal: ''
   })
+  const { verifyScreenAccess } = useAuth();
+
   
   // Função para buscar cursos
   const buscarCursos = async () => {

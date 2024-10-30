@@ -310,6 +310,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
 import { 
   generoOptions,
   estadoCivilOptions,
@@ -339,6 +340,7 @@ const { id, hash } = route.params
 const userId = localStorage.getItem('user_id');
 const showHistoricoModal = ref(false)
 const historico = ref([])
+const { verifyScreenAccess } = useAuth();
 
 // Computed properties to determine button states
 const isApproveDisabled = computed(() => {
@@ -484,6 +486,7 @@ const formatDateTime = (dateTimeString) => {
 }
 
 onMounted(async () => {
+  await verifyScreenAccess('/admin/inscricoes')
   await fetchCountryList()
   inscricao.value = await fetchInscricao(id, hash, config)
   loading.value = false

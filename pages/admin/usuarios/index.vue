@@ -121,6 +121,6 @@ const verDetalhes = (id) => {
 
 onMounted(async () => {
   buscarAdmins()
-  // await verifyScreenAccess("/admin/usuarios")
+  await verifyScreenAccess("/admin/usuarios")
 })
 </script>

@@ -170,7 +170,7 @@
   }
   
   onMounted(async () => {
-    // await verifyScreenAccess("/admin/usuarios")
+    await verifyScreenAccess("/admin/usuarios")
     carregarDados()
   })
   </script>

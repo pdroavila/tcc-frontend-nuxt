@@ -154,7 +154,7 @@
   import { ref, reactive, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { getCursos, getPolos, getInscricoes } from "~/services/apiService";
-  
+
   const config = useRuntimeConfig()
   const router = useRouter()
   const loading = ref(true)
@@ -176,7 +176,8 @@
     data_final: '',
     page: 1
   })
-  
+  const { verifyScreenAccess } = useAuth();
+
   const buscarInscricoes = async (url = false) => {
     try {
       loading.value = true
@@ -245,6 +246,7 @@
   
   onMounted(async () => {
     await Promise.all([
+      verifyScreenAccess('/admin/inscricoes'),
       buscarInscricoes(),
       buscarCursos(),
       buscarPolos()
