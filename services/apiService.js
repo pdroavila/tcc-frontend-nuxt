@@ -147,13 +147,16 @@ export const fetchInscricao = async (inscricaoId, hash, config) => {
   }
 };
 
-export const rejectInscription = async (id, config) => {
+export const rejectInscription = async (id, userId, motivo, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/rejeitar/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }});
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      body: JSON.stringify({user_id: userId, motivo})
+    });
 
     if (!response.ok) {
       throw new Error('Erro ao rejeitar a inscrição.');
@@ -167,10 +170,15 @@ export const rejectInscription = async (id, config) => {
   }
 };
 
-export const approveInscription = async (id, config) => {
+export const approveInscription = async (id, userId, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/aprovar/`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      body: JSON.stringify({user_id: userId})
     })
 
     if (!response.ok) {
@@ -331,6 +339,7 @@ export const postCursos = async (formData, config) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       },
       body:  JSON.stringify({
         nome: formData.value.nome,
@@ -383,12 +392,40 @@ export const getPolos = async (config) => {
   }
 }
 
+export const fetchCurso = async(config, cursoId) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/cursos/${cursoId}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao solicitar o curso');
+    }
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar o curso');
+  }
+}
+
+
 export const updateCurso = async (cursoId, formData, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/cursos/${cursoId}/update/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       },
       body:  JSON.stringify({
         nome: formData.value.nome,
@@ -427,6 +464,7 @@ export const getAdminUsers = async (filters, config) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       }
     });
 
@@ -448,6 +486,7 @@ export const getAdminUser = async (userId, config) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       }
     });
 
@@ -470,6 +509,7 @@ export const createAdminUser = async (userData, config) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       },
       body: JSON.stringify({
         username: userData.username,
@@ -501,6 +541,7 @@ export const updateAdminUser = async (userId, userData, config) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       },
       body: JSON.stringify({
         ...(userData.email && { email: userData.email }),
@@ -532,6 +573,7 @@ export const getTelas = async (config) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       }
     });
 
@@ -547,6 +589,28 @@ export const getTelas = async (config) => {
   }
 }
 
+export const getDados = async (config, id) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao buscar telas');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao buscar dados.');
+  }
+}
+
 export const getInscricoes = async (filters, config, url) => {
   try {
     const urlBusca = url ? url : `${config.public.apiUrl}/admin/inscricoes`;
@@ -559,6 +623,7 @@ export const getInscricoes = async (filters, config, url) => {
       params: filters,
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
       }
     });
 
@@ -572,4 +637,20 @@ export const getInscricoes = async (filters, config, url) => {
     console.error(error);
     throw new Error('Erro ao buscar inscricoes do sistema');
   }
+}
+
+export const fetchHistoricoInscricao = async (id, config) => {
+  const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/historico/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error('Erro ao buscar histórico da inscrição')
+  }
+
+  return await response.json()
 }

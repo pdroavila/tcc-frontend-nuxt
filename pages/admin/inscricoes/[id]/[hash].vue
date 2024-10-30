@@ -216,6 +216,12 @@
       <!-- Botões de Ação -->
       <div class="mt-6 flex justify-end gap-2">
         <button
+          class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          @click="openHistoricoModal"
+        >
+          Ver Histórico
+        </button>
+        <button
           class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 disabled:bg-gray-400"
           :disabled="isApproveDisabled"
           @click="aprovarInscricao"
@@ -269,6 +275,35 @@
         </div>
       </template>
     </Modal>
+
+    <!-- Modal de Histórico -->
+    <Modal v-if="showHistoricoModal" @close="showHistoricoModal = false">
+      <template #header>
+        <h2 class="text-lg font-medium">Histórico da Inscrição</h2>
+      </template>
+      <template #body>
+        <div class="space-y-4">
+          <div v-if="historico.length === 0">
+            <p>Não há registros de histórico para esta inscrição.</p>
+          </div>
+          <div v-else>
+            <ul class="space-y-2">
+              <li v-for="log in historico" :key="log.id" class="border-b pb-2">
+                <p><strong>Data:</strong> {{ formatDateTime(log.data_registro) }}</p>
+                <p><strong>Status:</strong> {{ log.status_display }}</p>
+                <p><strong>Usuário:</strong> {{ log.usuario_nome || 'Sistema' }}</p>
+                <p><strong>Observações:</strong> {{ log.observacoes || 'Nenhuma' }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <button class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700" @click="showHistoricoModal = false">
+          Fechar
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -284,7 +319,7 @@ import {
   tipoEscolaOptions,
   escolaridadeOptions
 } from '~/constants/formOptions'
-import { fetchCountries, rejectInscription, fetchInscricao, approveInscription } from '~/services/apiService' // Importa a função para buscar países
+import { fetchCountries, rejectInscription, fetchInscricao, approveInscription, fetchHistoricoInscricao } from '~/services/apiService' // Importa a função para buscar países
 import Modal from '~/components/Modal.vue'
 import Loader from '~/components/Loader.vue'
 import { useToast } from "vue-toastification";
@@ -301,6 +336,9 @@ const currentAttachmentUrl = ref('')
 const countryList = ref([])
 const config = useRuntimeConfig()
 const { id, hash } = route.params
+const userId = localStorage.getItem('user_id');
+const showHistoricoModal = ref(false)
+const historico = ref([])
 
 // Computed properties to determine button states
 const isApproveDisabled = computed(() => {
@@ -381,7 +419,7 @@ const rejeitarInscricao = async () => {
     }
 
     loading.value = true
-    const response = await rejectInscription(id, config)
+    const response = await rejectInscription(id, userId, rejectReason.value, config)
     toast.success('Inscrição rejeitada com sucesso.') 
     showRejectModal.value = false
     router.push(`/admin/inscricoes/`);
@@ -397,7 +435,7 @@ const rejeitarInscricao = async () => {
 const aprovarInscricao = async () => {
   try {
     loading.value = true
-    const response = await approveInscription(id, config);
+    const response = await approveInscription(id, userId, config);
     toast.success("Inscrição aprovada com sucesso.");
     router.push(`/admin/inscricoes/`);
   } catch (error) {
@@ -419,6 +457,30 @@ const fetchCountryList = async () => {
   } catch (error) {
     console.error('Erro ao buscar lista de países:', error)
   }
+}
+
+const openHistoricoModal = async () => {
+  try {
+    loading.value = true
+    showHistoricoModal.value = true
+
+    // Faça a requisição para obter o histórico
+    const response = await fetchHistoricoInscricao(id, config)
+    historico.value = response
+
+  } catch (error) {
+    console.error('Erro ao obter histórico:', error)
+    toast.error('Erro ao obter histórico. Tente novamente.')
+    showHistoricoModal.value = false
+  } finally {
+    loading.value = false
+  }
+}
+
+const formatDateTime = (dateTimeString) => {
+  if (!dateTimeString) return '-'
+  const date = new Date(dateTimeString)
+  return date.toLocaleString('pt-BR')
 }
 
 onMounted(async () => {

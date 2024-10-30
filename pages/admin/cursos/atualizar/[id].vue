@@ -84,7 +84,7 @@
   <script setup>
   import { ref, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { getPolos, updateCurso } from "~/services/apiService";
+  import { getPolos, updateCurso, fetchCurso } from "~/services/apiService";
   import { useToast } from "vue-toastification";
   const { verifyScreenAccess } = useAuth();
 
@@ -106,9 +106,8 @@
   // Buscar dados do curso
   const buscarCurso = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/admin/cursos/${cursoId}/`)
-      const data = await response.json()
-      
+      const data = await fetchCurso(config, cursoId);
+
       // Formata a data para o formato aceito pelo input datetime-local
       const date = new Date(data.prazo_inscricoes)
       const formattedDate = date.toISOString().slice(0, 16)
@@ -119,6 +118,7 @@
       }
     } catch (error) {
       console.error('Erro ao buscar curso:', error)
+      toast.error(error)
     }
   }
   

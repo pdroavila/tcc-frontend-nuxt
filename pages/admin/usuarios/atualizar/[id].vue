@@ -104,7 +104,7 @@
   <script setup>
   import { ref, reactive, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { getTelas, updateAdminUser } from '~/services/apiService'
+  import { getTelas, updateAdminUser, getDados } from '~/services/apiService'
   const { verifyScreenAccess } = useAuth()
   
   const route = useRoute()
@@ -133,9 +133,8 @@
   
       if (!isNew) {
         // Carregar dados do usuário se estiver editando
-        const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${route.params.id}`)
-        const userData = await response.json()
-        
+        const userData = await getDados(config, route.params.id)
+                
         formData.username = userData.username
         formData.email = userData.email
         formData.nome_completo = userData.nome_completo
