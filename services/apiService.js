@@ -1,14 +1,19 @@
-import axios from 'axios';
-
-const API_URL = 'https://restcountries.com/v3.1/all';
-
 export const fetchCountries = async () => {
   try {
-    const response = await axios.get(API_URL);
-    return response.data.map(country => ({
-      value: country.cca2,
-      label: country.translations.por.common || country.name.common
-    })).sort((a, b) => a.label.localeCompare(b.label));
+    const response = await fetch("https://restcountries.com/v3.1/all");
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data
+      .map(country => ({
+        value: country.cca2,
+        label: country.translations.por?.common || country.name.common
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   } catch (error) {
     console.error('Erro ao buscar países:', error);
     throw error;

@@ -43,7 +43,6 @@
   
   <script setup>
   import { ref, onMounted, nextTick } from 'vue';
-  import axios from 'axios';
   import Chart from 'chart.js/auto';
   
   const loading = ref(true);
