@@ -1,3 +1,4 @@
+//Esta função é responsável por buscar a lista de países da API https://restcountries.com/v3.1/all e retornar com os nomes traduzidos para o português, se disponíveis.
 export const fetchCountries = async () => {
   try {
     const response = await fetch("https://restcountries.com/v3.1/all");
@@ -20,6 +21,7 @@ export const fetchCountries = async () => {
   }
 };
 
+//Esta função obtém a lista de estados brasileiros da API do IBGE, formatando-os para uso no sistema.
 export const fetchEstados = async () => {
   try {
     const response = await fetch(
@@ -36,6 +38,7 @@ export const fetchEstados = async () => {
   }
 };
 
+//Esta função busca uma lista de cidades de um estado específico na API do IBGE, usando a sigla do estado como parâmetro.
 export const fetchCidades = async (estado) => {
   if (!estado) return [];
   try {
@@ -53,6 +56,7 @@ export const fetchCidades = async (estado) => {
   }
 };
 
+//Esta função busca informações de endereço com base no CEP informado, usando a API https://viacep.com.br/ws.
 export const getCEP = async (cep) => {
   try {
     const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
@@ -67,6 +71,7 @@ export const getCEP = async (cep) => {
   }
 };
 
+//Esta função busca os polos associados a um curso específico, consultando o backend com o ID do curso fornecido.
 export const fetchPolos = async (curso_id, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/cursos/${curso_id}/polos/`);
@@ -87,6 +92,7 @@ export const fetchPolos = async (curso_id, config) => {
   }
 }
 
+//Esta função envia dados de inscrição de um candidato para o backend, criando uma nova inscrição no sistema.
 export const sendInscricao = async (inscricao, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/inscricao/`, {
@@ -115,6 +121,7 @@ export const sendInscricao = async (inscricao, config) => {
   }
 };
 
+//Esta função recupera informações de um candidato e suas inscrições usando um hash único associado ao candidato.
 export const fetchInscricoes = async (hash, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/candidatos/${hash}`, {
@@ -135,7 +142,7 @@ export const fetchInscricoes = async (hash, config) => {
   }
 }
 
-
+//Esta função obtém detalhes específicos de uma inscrição com base no ID e hash, incluindo informações do curso e do candidato.
 export const fetchInscricao = async (inscricaoId, hash, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/inscricoes/${inscricaoId}/${hash}`);
@@ -152,6 +159,7 @@ export const fetchInscricao = async (inscricaoId, hash, config) => {
   }
 };
 
+//Esta função rejeita uma inscrição de candidato, enviando o ID da inscrição e um motivo para o backend.
 export const rejectInscription = async (id, userId, motivo, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/rejeitar/`, {
@@ -175,6 +183,7 @@ export const rejectInscription = async (id, userId, motivo, config) => {
   }
 };
 
+//Esta função aprova uma inscrição, atualizando o status no sistema com base no ID da inscrição.
 export const approveInscription = async (id, userId, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/aprovar/`, {
@@ -198,6 +207,7 @@ export const approveInscription = async (id, userId, config) => {
   }
 };
 
+//Esta função atualiza os dados de uma inscrição e do candidato associado, incluindo endereço e histórico educacional.
 export const updateInscricao = async (inscricao, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/inscricao/alterar/`, {
@@ -226,6 +236,7 @@ export const updateInscricao = async (inscricao, config) => {
   }
 }
 
+//Esta função realiza o login de um administrador, retornando tokens de autenticação se as credenciais forem válidas.
 export const loginAdmin = async (loginData, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/login/`, {
@@ -255,6 +266,7 @@ export const loginAdmin = async (loginData, config) => {
   }
 };
 
+//Esta função solicita a recuperação de senha de um administrador, enviando um e-mail de recuperação.
 export const recoverSenha = async (email, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/recuperar-senha/`, {
@@ -281,6 +293,7 @@ export const recoverSenha = async (email, config) => {
   }
 };
 
+//Esta função permite que o administrador altere sua senha usando um token de recuperação.
 export const updateSenha = async (payload, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/alterar-senha/`, {
@@ -307,6 +320,7 @@ export const updateSenha = async (payload, config) => {
   }
 };
 
+//Esta função busca uma lista de cursos, podendo aplicar filtros opcionais de nome e data.
 export const getCursos = async (filters, config) => {
   try {
 
@@ -338,6 +352,7 @@ export const getCursos = async (filters, config) => {
   }
 }
 
+//Esta função cria um novo curso no sistema, associando polos ao curso durante o processo.
 export const postCursos = async (formData, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/curso-novo`, {
@@ -372,6 +387,7 @@ export const postCursos = async (formData, config) => {
   }
 }
 
+//Esta função recupera todos os polos cadastrados no sistema para exibição.
 export const getPolos = async (config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/polos/`, {
@@ -397,6 +413,7 @@ export const getPolos = async (config) => {
   }
 }
 
+//Esta função busca detalhes de um curso específico com base no seu ID.
 export const fetchCurso = async(config, cursoId) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/cursos/${cursoId}/`, {
@@ -423,7 +440,7 @@ export const fetchCurso = async(config, cursoId) => {
   }
 }
 
-
+//Esta função atualiza os dados de um curso específico, incluindo polos associados.
 export const updateCurso = async (cursoId, formData, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/cursos/${cursoId}/update/`, {
@@ -458,6 +475,7 @@ export const updateCurso = async (cursoId, formData, config) => {
   }
 }
 
+//Esta função lista os usuários administradores do sistema, permitindo filtros como nome e e-mail.
 export const getAdminUsers = async (filters, config) => {
   try {
     const queryParams = new URLSearchParams({
@@ -484,7 +502,8 @@ export const getAdminUsers = async (filters, config) => {
     throw new Error('Erro ao buscar usuários administradores');
   }
 }
-// Buscar usuário específico
+
+// Esta função busca os dados de um administrador específico com base no seu ID.
 export const getAdminUser = async (userId, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${userId}`, {
@@ -507,7 +526,7 @@ export const getAdminUser = async (userId, config) => {
   }
 }
 
-// Criar novo usuário admin
+// Esta função cria um novo usuário administrador, associando permissões de telas.
 export const createAdminUser = async (userData, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/usuarios/`, {
@@ -539,7 +558,7 @@ export const createAdminUser = async (userData, config) => {
   }
 }
 
-// Atualizar usuário admin
+// Esta função atualiza os dados de um usuário administrador, incluindo as permissões de acesso às telas.
 export const updateAdminUser = async (userId, userData, config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${userId}/`, {
@@ -571,7 +590,7 @@ export const updateAdminUser = async (userId, userData, config) => {
   }
 }
 
-
+// Esta função busca a lista de telas disponíveis no sistema, usada para configurar permissões de administradores.
 export const getTelas = async (config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/telas`, {
@@ -594,6 +613,7 @@ export const getTelas = async (config) => {
   }
 }
 
+// Esta função recupera dados detalhados de um usuário administrador com base no ID fornecido.
 export const getDados = async (config, id) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/usuarios/${id}`, {
@@ -616,6 +636,7 @@ export const getDados = async (config, id) => {
   }
 }
 
+// Esta função lista inscrições de candidatos, aplicando filtros como candidato, curso, polo e data.
 export const getInscricoes = async (filters, config, url) => {
   try {
     const urlBusca = url ? url : `${config.public.apiUrl}/admin/inscricoes`;
@@ -644,6 +665,7 @@ export const getInscricoes = async (filters, config, url) => {
   }
 }
 
+// Esta função recupera o histórico de logs de uma inscrição específica, incluindo status e observações.
 export const fetchHistoricoInscricao = async (id, config) => {
   const response = await fetch(`${config.public.apiUrl}/admin/inscricoes/${id}/historico/`, {
     method: 'GET',
@@ -660,6 +682,7 @@ export const fetchHistoricoInscricao = async (id, config) => {
   return await response.json()
 }
 
+// Esta função busca dados estatísticos do sistema, como inscrições por polo, distribuição de gênero e outros.
 export const getGraficos = async (config) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/admin/graficos`, {
@@ -682,6 +705,7 @@ export const getGraficos = async (config) => {
   }
 }
 
+// Esta função busca cidades no backend com base no nome da cidade fornecido, usada para autocompletar campos de cidades.
 export const getCidades = async (config, cityName) => {
   try {
     const response = await fetch(`${config.public.apiUrl}/buscar-cidades?nome=${cityName}`, {
