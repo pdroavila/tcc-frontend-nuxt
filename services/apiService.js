@@ -324,12 +324,14 @@ export const updateSenha = async (payload, config) => {
 export const getCursos = async (filters, config) => {
   try {
 
-    const params = new URLSearchParams()
-    if (filters.nome) params.append('nome', filters.nome)
-    if (filters.dataInicial) params.append('data_inicial', filters.dataInicial)
-    if (filters.dataFinal) params.append('data_final', filters.dataFinal)
+    if(filters)
+      queryParams = new URLSearchParams({
+       ...(filters.nome && { nome: filters.nome }),
+       ...(filters.dataInicial && { data_inicial: filters.dataInicial }),
+       ...(filters.dataFinal && { data_final: filters.dataFinal })
+     }).toString();
 
-    const response = await fetch(`${config.public.apiUrl}/cursos/`, {
+    const response = await fetch(`${config.public.apiUrl}/cursos/${queryParams ? `?${queryParams}` : ''}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
