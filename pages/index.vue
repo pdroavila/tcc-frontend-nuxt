@@ -22,10 +22,12 @@
 import { useRouter } from 'vue-router';
 import Loader from '~/components/Loader.vue';
 import { useAuth } from '~/composables/useAuth';
+import { getCursos } from '~/services/apiService';
 
 const { isAuthenticated } = useAuth();
 const config = useRuntimeConfig();
-const { data: courses, error, pending } = useFetch(`${config.public.apiUrl}/cursos/?format=json`);
+const courses = ref([]);
+// const { data: courses, error, pending } = useFetch(`${config.public.apiUrl}/cursos/?format=json`);
 const router = useRouter();
 
 function navigateToForm(courseId) {
@@ -39,10 +41,12 @@ onBeforeMount(async () => {
   }
 })
 
-onMounted(() => {
+onMounted(async () => {
   if (isAuthenticated.value) {
     router.push('/admin/dashboard'); // Redireciona se já estiver autenticado
   }
+
+  courses.value = await getCursos(null, config)
 });
 
 // Observa mudanças no estado de autenticação, útil se a verificação demorar

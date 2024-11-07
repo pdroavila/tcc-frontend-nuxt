@@ -10,12 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/toast": "^3.3.1",
     "chart.js": "^4.4.5",
     "nuxt": "^3.12.4",
-    "vue": "latest",
-    "vue-toastification": "^2.0.0-rc.5",
-    "vue3-loading-overlay": "^0.0.0"
+    "vue": "^3.2.0",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1"
