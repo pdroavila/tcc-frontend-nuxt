@@ -6,6 +6,7 @@
       <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h2 class="text-2xl font-bold text-center mb-6">Alterar Senha</h2>
         <form @submit.prevent="handleChangePassword">
+          <!-- Nova Senha -->
           <div class="mb-4 relative">
             <input 
               :type="showPassword ? 'text' : 'password'" 
@@ -37,6 +38,7 @@
             >
           </div>
   
+          <!-- Botão Enviar -->
           <button 
             type="submit" 
             class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition duration-300"
