@@ -93,7 +93,7 @@
           </button>
           <button
             type="submit"
-            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+            class="px-4 py-2 bg-green-100 text-white rounded-md hover:bg-green-200"
           >
             Salvar Polo
           </button>

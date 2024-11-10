@@ -114,7 +114,7 @@
           </button>
           <button
             type="submit"
-            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
+            class="px-4 py-2 bg-green-100 text-white rounded-md hover:bg-green-200 disabled:opacity-50"
           >
             Salvar Alterações
           </button>

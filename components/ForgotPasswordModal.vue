@@ -27,7 +27,7 @@
           </button>
           <button
             type="submit"
-            class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+            class="px-4 py-2 bg-green-100 text-white rounded-md hover:bg-green-200 transition duration-300"
             :disabled="sending"
           >
             Enviar

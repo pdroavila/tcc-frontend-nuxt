@@ -57,7 +57,7 @@
         </div>
         <button
           type="submit"
-          class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition duration-300"
+          class="w-full bg-green-100 text-white py-2 rounded-md hover:bg-green-200 transition duration-300"
         >
           ENTRAR
         </button>
@@ -65,7 +65,7 @@
       <div class="mt-4 text-center">
         <a
           @click="showForgotPassword"
-          class="text-green-500 hover:text-green-600 cursor-pointer"
+          class="text-green-100 hover:text-green-200 cursor-pointer"
         >
           Esqueci minha senha
         </a>
