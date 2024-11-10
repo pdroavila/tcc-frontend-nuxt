@@ -526,7 +526,7 @@ const currentAttachmentUrl = ref("");
 const countryList = ref([]);
 const config = useRuntimeConfig();
 const { id, hash } = route.params;
-const userId = localStorage.getItem("user_id");
+const userId = ref(null);
 const showHistoricoModal = ref(false);
 const historico = ref([]);
 const { verifyScreenAccess } = useAuth();
@@ -678,9 +678,15 @@ const formatDateTime = (dateTimeString) => {
 };
 
 onMounted(async () => {
-  await verifyScreenAccess("/admin/inscricoes");
-  await fetchCountryList();
-  inscricao.value = await fetchInscricao(id, hash, config);
-  loading.value = false;
+  try {
+    await verifyScreenAccess("/admin/inscricoes");
+    await fetchCountryList();
+    inscricao.value = await fetchInscricao(id, hash, config);
+    userId.value = localStorage.getItem("user_id");
+  } catch (error) {
+    console.error("Erro desconhecido: " + error);
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
