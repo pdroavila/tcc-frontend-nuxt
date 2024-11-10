@@ -322,7 +322,7 @@
             <h2 class="text-lg font-medium mb-4 border-b pb-2">
               Anexos
               <p class="text-xs">
-                Os campos com
+                os campos com
                 <span class="text-red-500 font-bold">*</span> requerem uma maior
                 atenção na validação.
               </p>
