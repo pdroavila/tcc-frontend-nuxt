@@ -25,10 +25,10 @@
             label="Envie o histórico escolar"
             v-model="formData.anexo_historico_escolar"
             accept="image/png, image/jpeg, image/jpg, .pdf"
-            tipo='historico'
+            tipo="historico"
             :formData="formData"
             required
-            :isClickable="hist_image" 
+            :isClickable="hist_image"
             :url="hist_url"
           />
         </div>
@@ -46,7 +46,13 @@
           type="submit"
           class="px-4 sm:px-6 py-2 bg-green-100 text-white rounded-md hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
-          {{ currentStep === 1 ? "PRÓXIMA SEÇÃO" : (alteracao ? "ALTERAR DADOS" : "FINALIZAR INSCRIÇÃO") }}
+          {{
+            currentStep === 1
+              ? "PRÓXIMA SEÇÃO"
+              : alteracao
+              ? "ALTERAR DADOS"
+              : "FINALIZAR INSCRIÇÃO"
+          }}
         </button>
       </div>
     </div>
@@ -67,17 +73,15 @@ const props = defineProps({
   currentStep: Number,
 });
 
-
-
 const isBase64 = (str) => {
-// Remover o prefixo se houver
-const base64PrefixPattern = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+)?;base64,/;
+  // Remover o prefixo se houver
+  const base64PrefixPattern = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+)?;base64,/;
   if (base64PrefixPattern.test(str)) {
-    str = str.replace(base64PrefixPattern, '');
+    str = str.replace(base64PrefixPattern, "");
   }
 
   // Verifica se a string não é vazia e segue o comprimento múltiplo de 4
-  if (!str || str.trim() === '' || str.length % 4 !== 0) {
+  if (!str || str.trim() === "" || str.length % 4 !== 0) {
     return false;
   }
 
@@ -85,27 +89,33 @@ const base64PrefixPattern = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+)?;base64,/;
   const base64Regex = /^[A-Za-z0-9+/]+={0,2}$/;
 
   return base64Regex.test(str);
-}
+};
 
-const config = useRuntimeConfig()
+const config = useRuntimeConfig();
 const hist_image = ref(null);
-const hist_url = ref('');
-const alteracao = ref(props.formData.alteracao)
+const hist_url = ref("");
+const alteracao = ref(props.formData.alteracao);
 
 onMounted(() => {
-  if (props.formData.anexo_historico_escolar && !isBase64(props.formData.anexo_historico_escolar)) {
-      hist_image.value = true;
-      hist_url.value = `${config.public.apiUrl}/media-image/${props.formData.anexo_historico_escolar}`;
+  if (
+    props.formData.anexo_historico_escolar &&
+    !isBase64(props.formData.anexo_historico_escolar)
+  ) {
+    hist_image.value = true;
+    hist_url.value = `${config.public.apiUrl}/media-image/${props.formData.anexo_historico_escolar}`;
   }
 });
 
 watchEffect(() => {
-  if (props.formData.anexo_historico_escolar && !isBase64(props.formData.anexo_historico_escolar)) {
+  if (
+    props.formData.anexo_historico_escolar &&
+    !isBase64(props.formData.anexo_historico_escolar)
+  ) {
     hist_image.value = true;
     hist_url.value = `${config.public.apiUrl}/media-image/${props.formData.anexo_historico_escolar}`;
   } else {
     hist_image.value = false;
-    hist_url.value = '';
+    hist_url.value = "";
   }
 });
 
@@ -117,5 +127,4 @@ const handleSubmit = (event) => {
     event.target.reportValidity();
   }
 };
-
 </script>

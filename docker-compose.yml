@@ -10,6 +10,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev
+    tmpfs:
+      - /tmp
+    command: sh -c "rm -f /tmp/nitro/*.sock && npm run dev"
     stdin_open: true  # Mantém o stdin aberto (opcional)
     tty: true         # Aloca um terminal (opcional)

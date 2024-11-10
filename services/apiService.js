@@ -324,12 +324,15 @@ export const updateSenha = async (payload, config) => {
 export const getCursos = async (filters, config) => {
   try {
 
+    let queryParams = null;
+
     if(filters)
-      queryParams = new URLSearchParams({
-       ...(filters.nome && { nome: filters.nome }),
-       ...(filters.dataInicial && { data_inicial: filters.dataInicial }),
-       ...(filters.dataFinal && { data_final: filters.dataFinal })
-     }).toString();
+       queryParams = new URLSearchParams({
+        ...(filters.nome && { nome: filters.nome }),
+        ...(filters.dataInicial && { data_inicial: filters.dataInicial }),
+        ...(filters.dataFinal && { data_final: filters.dataFinal }),
+        ...(filters.polo && { polo: filters.polo })
+      }).toString();
 
     const response = await fetch(`${config.public.apiUrl}/cursos/${queryParams ? `?${queryParams}` : ''}`, {
       method: 'GET',
@@ -357,7 +360,7 @@ export const getCursos = async (filters, config) => {
 //Esta função cria um novo curso no sistema, associando polos ao curso durante o processo.
 export const postCursos = async (formData, config) => {
   try {
-    const response = await fetch(`${config.public.apiUrl}/admin/curso-novo`, {
+    const response = await fetch(`${config.public.apiUrl}/admin/curso-novo/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -367,7 +370,9 @@ export const postCursos = async (formData, config) => {
         nome: formData.value.nome,
         descricao: formData.value.descricao,
         prazo_inscricoes: formData.value.prazo_inscricoes,
-        polos: formData.value.polos
+        polos: formData.value.polos,
+        carga_horaria: formData.value.carga_horaria,
+        requisitos: formData.value.requisitos
       }),
     });
 
@@ -390,9 +395,17 @@ export const postCursos = async (formData, config) => {
 }
 
 //Esta função recupera todos os polos cadastrados no sistema para exibição.
-export const getPolos = async (config) => {
+export const getPolos = async (config, filters = null) => {
   try {
-    const response = await fetch(`${config.public.apiUrl}/polos/`, {
+    let queryParams = null;
+
+    if(filters)
+       queryParams = new URLSearchParams({
+        ...(filters.nome && { nome: filters.nome }),
+        ...(filters.cidade && { cidade: filters.cidade }),
+      }).toString();
+
+    const response = await fetch(`${config.public.apiUrl}/polos/${queryParams ? `?${queryParams}` : ''}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -455,7 +468,9 @@ export const updateCurso = async (cursoId, formData, config) => {
         nome: formData.value.nome,
         descricao: formData.value.descricao,
         prazo_inscricoes: formData.value.prazo_inscricoes,
-        polos: formData.value.polos
+        polos: formData.value.polos,
+        carga_horaria: formData.value.carga_horaria,
+        requisitos: formData.value.requisitos,
       }),
     });
 
@@ -685,9 +700,9 @@ export const fetchHistoricoInscricao = async (id, config) => {
 }
 
 // Esta função busca dados estatísticos do sistema, como inscrições por polo, distribuição de gênero e outros.
-export const getGraficos = async (config) => {
+export const getGraficos = async (config, idPolo) => {
   try {
-    const response = await fetch(`${config.public.apiUrl}/admin/graficos`, {
+    const response = await fetch(`${config.public.apiUrl}/admin/graficos${idPolo ? `?id_polo=${idPolo}` : ``}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -708,9 +723,9 @@ export const getGraficos = async (config) => {
 }
 
 // Esta função busca cidades no backend com base no nome da cidade fornecido, usada para autocompletar campos de cidades.
-export const getCidades = async (config, cityName) => {
-  try {
-    const response = await fetch(`${config.public.apiUrl}/buscar-cidades?nome=${cityName}`, {
+export const getCidades = async (config, cityName = null) => {
+  try {    
+      const response = await fetch(`${config.public.apiUrl}/buscar-cidades${cityName ? `?nome=${cityName}` : ''}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -726,5 +741,142 @@ export const getCidades = async (config, cityName) => {
   } catch (error) {
     console.error(error);
     throw new Error('Erro ao buscar cidades do sistema');
+  }
+}
+
+export const postPolos = async (formData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/polos/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      body:  JSON.stringify({
+        nome: formData.value.nome,
+        logradouro: formData.value.logradouro,
+        numero: formData.value.numero,
+        bairro: formData.value.bairro,
+        cidade: formData.value.cidade
+      }),
+    });
+
+    if (response.status !== 201) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao criar o polo');
+    }
+
+    let data = await response.json();
+    console.log("Resposta da API:", data);
+
+    data.message = "Polo criado com sucesso";
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar a criação do polo');
+  }
+}
+
+export const updatePolo = async (poloId, userData, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/polos/${poloId}/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      body: JSON.stringify({
+        ...(userData.value.nome && { nome: userData.value.nome }),
+        ...(userData.value.logradouro && { logradouro: userData.value.logradouro }),
+        ...(userData.value.numero && { numero: userData.value.numero }),
+        ...(userData.value.bairro && { bairro: userData.value.bairro }),
+        ...(userData.value.cidade && { cidade: userData.value.cidade })
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao atualizar o polo');
+    }
+
+    const data = await response.json();
+    data.message = "Polo atualizado com sucesso";
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erro ao atualizar polo administrador');
+  }
+}
+
+export const getPolo = async (poloId, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/polos/${poloId}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao buscar o polo');
+    }
+
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar a busca do polo');
+  }
+}
+
+export const deletePolo = async (poloId, config) => {
+  try {
+    const response = await fetch(`${config.public.apiUrl}/admin/polos/${poloId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+
+    if (response.status !== 204) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao deletar o polo');
+    }
+
+    return true;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar a deletar do polo');
+  }
+}
+
+export const estatisticasPolo = async (config, poloId = null) => {
+  try{
+    const response = await fetch(`${config.public.apiUrl}/admin/estatisticas${poloId ? `?polo_id=${poloId}` : ''}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+
+    if (response.status !== 200) {
+      const errorData = await response.json();
+      console.log(errorData);
+      throw new Error(errorData.message || 'Erro desconhecido ao buscar as estastisticas');
+    }
+
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erro ao solicitar as estastisticas');
   }
 }

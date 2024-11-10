@@ -131,20 +131,18 @@ watch(
 );
 
 onMounted(async () => {
-  if(props.formData.cep){
+  if (props.formData.cep) {
     let cep = props.formData.cep;
-    
+
     if (cep.length === 8) {
       try {
         const data = await getCEP(cep);
 
-        if(data.logradouro)
-          props.formData.logradouro = data.logradouro;
-        
-        if(data.bairro)
-          props.formData.bairro = data.bairro;
+        if (data.logradouro) props.formData.logradouro = data.logradouro;
 
-        if(data.uf)
+        if (data.bairro) props.formData.bairro = data.bairro;
+
+        if (data.uf)
           props.formData.estado = data.uf ? data.uf : props.formData.estado;
 
         cidadeOptions.value = await fetchCidades(data.uf);
@@ -154,9 +152,7 @@ onMounted(async () => {
       }
     }
   }
-
-})
-
+});
 
 const handleSubmit = (event) => {
   if (event.target.checkValidity()) {

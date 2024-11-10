@@ -1,9 +1,9 @@
 <template>
-    <div class="loader-dots">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+  <div class="loader-dots">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </template>
 
 <style scoped>
@@ -31,9 +31,12 @@
 }
 
 @keyframes loader-dots {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
-  } 40% {
+  }
+  40% {
     transform: scale(1);
   }
 }

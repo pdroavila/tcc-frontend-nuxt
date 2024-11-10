@@ -14,7 +14,12 @@
       }"
     >
       <div class="space-y-1 text-center">
-          <a v-if="isClickable" :href="url" target="_blank" rel="noopener noreferrer">
+        <a
+          v-if="isClickable"
+          :href="url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <svg
             class="mx-auto h-12 w-12 text-gray-400 cursor-pointer hover:text-gray-600"
             stroke="currentColor"
@@ -92,7 +97,7 @@ const props = defineProps({
   },
   url: {
     type: String,
-    default: '', // Pode ser definido como uma URL específica
+    default: "", // Pode ser definido como uma URL específica
   },
 });
 
@@ -112,9 +117,8 @@ watch(
 );
 
 onMounted(() => {
-  if(props.formData.alteracao)
-    fileUploaded.value = isClickable.value;
-})
+  if (props.formData.alteracao) fileUploaded.value = isClickable.value;
+});
 
 const handleFileUpload = (event, type) => {
   const file = event.target.files[0];
@@ -123,27 +127,28 @@ const handleFileUpload = (event, type) => {
 
 const processFile = (file, type) => {
   if (file) {
-    if (file.size <= 10 * 1024 * 1024) { // Limite de 10MB para o arquivo
+    if (file.size <= 10 * 1024 * 1024) {
+      // Limite de 10MB para o arquivo
       fileName.value = file.name;
       fileUploaded.value = true;
-      
+
       const reader = new FileReader();
-      
+
       // Ler o arquivo como Data URL (base64)
       reader.onloadend = () => {
         const base64String = reader.result;
 
         // Verifica o tipo de arquivo e coloca no campo correto
-        if (type === 'cpf') {
-          props.formData.anexo_cpf = base64String;  // Atribui a base64 no campo anexo_cpf
-        } else if (type === 'rg') {
-          props.formData.anexo_rg = base64String;   // Atribui a base64 no campo anexo_rg
+        if (type === "cpf") {
+          props.formData.anexo_cpf = base64String; // Atribui a base64 no campo anexo_cpf
+        } else if (type === "rg") {
+          props.formData.anexo_rg = base64String; // Atribui a base64 no campo anexo_rg
         }
 
         isClickable.value = false;
         emit("update:modelValue", base64String);
       };
-      
+
       reader.readAsDataURL(file); // Inicia a leitura do arquivo
     } else {
       alert("O arquivo é muito grande. O tamanho máximo permitido é 10MB.");

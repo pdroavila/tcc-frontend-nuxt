@@ -1,9 +1,16 @@
 <template>
-  <div class="flex items-center justify-center bg-gray-100" style="min-height: calc(100vh - 4rem);"> <!-- Altura calculada -->
+  <div
+    class="flex items-center justify-center bg-gray-100"
+    style="min-height: calc(100vh - 4rem)"
+  >
+    <!-- Altura calculada -->
     <div class="w-full max-w-4xl p-4 sm:p-6 bg-white rounded-lg shadow-lg">
-        <div v-if="isSubmitting" class="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-75 z-50">
-          <Loader />
-        </div>
+      <div
+        v-if="isSubmitting"
+        class="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-75 z-50"
+      >
+        <Loader />
+      </div>
       <ProgressBar
         :sections="sections"
         :currentSection="currentSection"
@@ -52,14 +59,12 @@ import { sections, initialFormData } from "~/constants/formData";
 import { sendInscricao, updateInscricao } from "~/services/apiService";
 import { useToast } from "vue-toastification";
 import Loader from "~/components/Loader.vue";
-import { useRouter } from 'vue-router';
-
-
+import { useRouter } from "vue-router";
 
 const props = defineProps({
-  courseId: String,      
+  courseId: String,
   initialData: Object,
-  hash: [String, null]
+  hash: [String, null],
 });
 
 const router = useRouter();
@@ -68,10 +73,9 @@ const currentSection = ref(0);
 const currentStep = ref(0);
 const formSubmitted = ref(false);
 const isSubmitting = ref(false);
-const formData = ref({ ...initialFormData }); 
+const formData = ref({ ...initialFormData });
 const inscricao_id = ref(0);
 const config = useRuntimeConfig();
-
 
 const mapInitialDataToFormData = (initialData) => {
   if (!initialData || !initialData.candidato) return initialFormData;
@@ -81,7 +85,7 @@ const mapInitialDataToFormData = (initialData) => {
   let naturalidade_nome = "";
   let naturalidade_id = null;
   if (candidato.naturalidade) {
-    naturalidade_nome = candidato.naturalidade; 
+    naturalidade_nome = candidato.naturalidade;
   }
 
   inscricao_id.value = initialData.id;
@@ -107,11 +111,11 @@ const mapInitialDataToFormData = (initialData) => {
     renda_per_capita: candidato.renda_per_capita,
     etnia: candidato.etnia,
     nacionalidade: candidato.nacionalidade ? candidato.nacionalidade : "",
-    naturalidade: naturalidade_id, 
+    naturalidade: naturalidade_id,
     naturalidade_nome: naturalidade_nome,
     polo_ofertante: candidato.polo_ofertante,
-    polo_options:  initialData.polo_options ? initialData.polo_options : null,
-    area: candidato.endereco.area, 
+    polo_options: initialData.polo_options ? initialData.polo_options : null,
+    area: candidato.endereco.area,
     logradouro: candidato.endereco.logradouro,
     cep: candidato.endereco.cep,
     bairro: candidato.endereco.bairro,
@@ -121,8 +125,9 @@ const mapInitialDataToFormData = (initialData) => {
     complemento: candidato.endereco.complemento,
     tipo_escola: candidato.historico_educacional.tipo_escola,
     nivel_escolaridade: candidato.historico_educacional.nivel_escolaridade,
-    anexo_historico_escolar: candidato.historico_educacional.anexo_historico_escolar,
-    alteracao: true
+    anexo_historico_escolar:
+      candidato.historico_educacional.anexo_historico_escolar,
+    alteracao: true,
   };
 };
 
@@ -142,7 +147,7 @@ const resetFormData = () => {
 
 onMounted(() => {
   if (!props.initialData || Object.keys(props.initialData).length === 0) {
-    resetFormData(); 
+    resetFormData();
   }
 });
 
@@ -170,27 +175,27 @@ const submitForm = async () => {
   isSubmitting.value = true;
 
   try {
-    let form = formData.value; 
+    let form = formData.value;
     let inscricao = {
       candidato: {
         // outros todos os campos do formulário
-        ...form
+        ...form,
       },
       curso: props.courseId,
-      inscricao_id: inscricao_id.value
+      inscricao_id: inscricao_id.value,
     };
 
-    if(form.alteracao){
-      await updateInscricao(inscricao, config)
-      toast.success('Inscrição atualizada com sucesso.');
+    if (form.alteracao) {
+      await updateInscricao(inscricao, config);
+      toast.success("Inscrição atualizada com sucesso.");
       return router.push({ path: `/acesso/${props.hash}` });
     }
 
     await sendInscricao(inscricao, config);
     formSubmitted.value = true;
-    toast.success('Inscrição realizada com sucesso!');
+    toast.success("Inscrição realizada com sucesso!");
   } catch (error) {
-    console.error('Erro ao enviar a inscrição:', error);
+    console.error("Erro ao enviar a inscrição:", error);
     toast.error(error.message);
   } finally {
     isSubmitting.value = false; // Termina o loading
