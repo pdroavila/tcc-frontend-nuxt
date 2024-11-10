@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed top-0 left-0 right-0 bg-white shadow-md border-b border-green-500 z-10 h-16"
+    class="fixed top-0 left-0 right-0 bg-white shadow-md border-b border-green-100 z-10 h-16"
   >
     <div class="container mx-auto flex justify-between items-center py-2 px-6">
       <div class="text-2xl font-bold text-gray-800">
@@ -13,7 +13,7 @@
       </div>
       <div
         v-if="authCandidato || isAuthenticated"
-        class="font-bold text-green-700 flex gap-6"
+        class="font-bold text-green-100 hover:text-green-200 rounded-md flex gap-6"
       >
         <button @click="meus_cursos" v-if="!isAuthenticated">
           MEUS CURSOS

@@ -9,12 +9,6 @@
     <div class="bg-white rounded-lg shadow-md p-6">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Novo Usuário Administrador</h1>
-        <button
-          @click="voltar"
-          class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-        >
-          Voltar
-        </button>
       </div>
 
       <form @submit.prevent="criarUsuario" class="space-y-6">
@@ -95,8 +89,14 @@
 
         <div class="flex justify-end gap-2">
           <button
+            @click="voltar"
+            class="px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-50"
+          >
+            Cancelar
+          </button>
+          <button
             type="submit"
-            class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700"
+            class="px-6 py-2 bg-green-100 text-white rounded-md hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
           >
             Criar Usuário
           </button>

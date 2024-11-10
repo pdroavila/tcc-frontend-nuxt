@@ -41,7 +41,7 @@
 
         <button
           @click="buscarAdmins"
-          class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+          class="px-4 py-2 bg-green-100 text-white rounded-md hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
           Buscar
         </button>
@@ -103,7 +103,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-center">
                 <button
                   @click="verDetalhes(admin.id)"
-                  class="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700"
+                  class="text-sm px-3 py-1 hover:bg-green-700 bg-green-100 text-white rounded-md hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 >
                   Ver Detalhes
                 </button>
