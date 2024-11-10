@@ -319,19 +319,36 @@
 
           <!-- Seção de Anexos -->
           <div class="mt-4 bg-gray-50 p-4 rounded-lg">
-            <h2 class="text-lg font-medium mb-4 border-b pb-2">Anexos</h2>
+            <h2 class="text-lg font-medium mb-4 border-b pb-2">
+              Anexos
+              <p class="text-xs">
+                Os campos com
+                <span class="text-red-500 font-bold">*</span> requerem uma maior
+                atenção na validação.
+              </p>
+            </h2>
             <div class="space-y-2">
               <button
                 @click="openAttachment(inscricao.candidato?.anexo_cpf)"
                 class="w-full text-left p-2 hover:bg-gray-100 rounded"
               >
                 <i class="fas fa-file-pdf mr-2"></i> CPF
+                <span
+                  v-if="!inscricao.candidato.validacao_anexo_cpf"
+                  class="text-red-500 font-bold"
+                  >*</span
+                >
               </button>
               <button
                 @click="openAttachment(inscricao.candidato?.anexo_rg)"
                 class="w-full text-left p-2 hover:bg-gray-100 rounded"
               >
                 <i class="fas fa-file-pdf mr-2"></i> RG
+                <span
+                  v-if="!inscricao.candidato.validacao_anexo_rg"
+                  class="text-red-500 font-bold"
+                  >*</span
+                >
               </button>
               <button
                 @click="
@@ -422,11 +439,11 @@
         <h2 class="text-lg font-medium">Anexo</h2>
       </template>
       <template #body>
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-center h-[80vh]">
           <img
             :src="currentAttachmentUrl"
             alt="Anexo"
-            class="max-w-full h-auto"
+            class="max-h-full max-w-full object-contain"
           />
         </div>
       </template>

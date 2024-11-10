@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive } from "vue";
 
 export const sections = [
   { title: "Dados Pessoais", steps: 2 },
@@ -25,6 +25,8 @@ export const initialFormData = reactive({
   estado_civil: "",
   cpf_cedula_estrangeira: 0,
   rg_cedula_estrangeira: 0,
+  validacao_anexo_cpf: 0,
+  validacao_anexo_rg: 0,
   portador_necessidades_especiais: "",
   necessidade_especial: "",
   renda_per_capita: "",

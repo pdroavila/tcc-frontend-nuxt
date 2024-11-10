@@ -106,6 +106,8 @@ const mapInitialDataToFormData = (initialData) => {
     estado_civil: candidato.estado_civil,
     cpf_cedula_estrangeira: candidato.cpf_cedula_estrangeira ? 1 : 0,
     rg_cedula_estrangeira: candidato.rg_cedula_estrangeira ? 1 : 0,
+    validacao_anexo_cpf: candidato.validacao_anexo_cpf ? 1 : 0,
+    validacao_anexo_rg: candidato.validacao_anexo_rg ? 1 : 0,
     portador_necessidades_especiais: candidato.portador_necessidades_especiais,
     necessidade_especial: candidato.necessidade_especial,
     renda_per_capita: candidato.renda_per_capita,
