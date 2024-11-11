@@ -9,15 +9,15 @@ import Header from "~/components/Header.vue";
 
 const { authHash, checkAuthHash, logout, protectRoute } = useAuth();
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   if (authHash) {
     logout();
   }
 
-  protectRoute();
+  await protectRoute();
 });
 
-onMounted(() => {
-  protectRoute();
+onMounted(async () => {
+  await protectRoute();
 });
 </script>

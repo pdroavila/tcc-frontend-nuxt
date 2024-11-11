@@ -113,10 +113,7 @@ export const sendInscricao = async (inscricao, config) => {
         errorData.error || "Erro desconhecido ao enviar inscrição"
       );
     }
-
     const data = await response.json();
-    console.log("Resposta da API:", data);
-
     return data;
   } catch (error) {
     console.error("Erro ao enviar a inscricao: ", error);
@@ -135,7 +132,6 @@ export const fetchInscricoes = async (hash, config) => {
     });
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -240,7 +236,6 @@ export const updateInscricao = async (inscricao, config) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -267,7 +262,6 @@ export const loginAdmin = async (loginData, config) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     localStorage.setItem("access_token", data.access);
     localStorage.setItem("refresh_token", data.refresh);
@@ -302,7 +296,6 @@ export const recoverSenha = async (email, config) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -335,7 +328,6 @@ export const updateSenha = async (payload, config) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -376,7 +368,6 @@ export const getCursos = async (filters, config) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -413,7 +404,6 @@ export const postCursos = async (formData, config) => {
     }
 
     let data = await response.json();
-    console.log("Resposta da API:", data);
 
     data.message = "Curso criado com sucesso";
 
@@ -454,7 +444,6 @@ export const getPolos = async (config, filters = null) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -486,7 +475,6 @@ export const fetchCurso = async (config, cursoId) => {
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
 
     return data;
   } catch (error) {
@@ -526,7 +514,6 @@ export const updateCurso = async (cursoId, formData, config) => {
     }
 
     let data = await response.json();
-    console.log("Resposta da API:", data);
 
     data.message = "Curso atualizado com sucesso";
 
@@ -839,7 +826,6 @@ export const postPolos = async (formData, config) => {
     }
 
     let data = await response.json();
-    console.log("Resposta da API:", data);
 
     data.message = "Polo criado com sucesso";
 
