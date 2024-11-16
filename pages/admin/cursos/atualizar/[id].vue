@@ -155,13 +155,9 @@ const buscarCurso = async () => {
   try {
     const data = await fetchCurso(config, cursoId);
 
-    // Formata a data para o formato aceito pelo input datetime-local
-    const date = new Date(data.prazo_inscricoes);
-    const formattedDate = date.toISOString().slice(0, 16);
-
     formData.value = {
       ...data,
-      prazo_inscricoes: formattedDate,
+      prazo_inscricoes: data.prazo_inscricoes,
     };
   } catch (error) {
     console.error("Erro ao buscar curso:", error);
