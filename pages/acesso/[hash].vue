@@ -57,6 +57,8 @@ onBeforeMount(() => {
 
 onMounted(async () => {
   try {
+    checkAuthHash();
+
     isLoading.value = true;
     const inscricoesData = await fetchInscricoes(hash, config);
 
