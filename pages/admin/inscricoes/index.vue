@@ -47,6 +47,7 @@
             <option value="0">Aguardando análise</option>
             <option value="1">Aprovada</option>
             <option value="2">Rejeitada</option>
+            <option value="3">Aprovada (Sem Análise)</option>
           </select>
         </div>
 

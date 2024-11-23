@@ -550,6 +550,8 @@ const getStatusLabel = (status) => {
       return "Aprovada";
     case "2":
       return "Rejeitada";
+    case "3":
+      return "Aprovada (Sem Análise)";
     default:
       return "Desconhecido";
   }

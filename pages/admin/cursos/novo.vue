@@ -61,6 +61,17 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
+              Prazo de Validações
+            </label>
+            <input
+              v-model="formData.prazo_validacao"
+              type="datetime-local"
+              required
+              class="w-full border rounded-md p-2 focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
               Carga Horária
             </label>
             <input
@@ -139,6 +150,7 @@ const formData = ref({
   nome: "",
   descricao: "",
   prazo_inscricoes: "",
+  prazo_validacao: "",
   polos: [],
   carga_horaria: "",
   requisitos: "",

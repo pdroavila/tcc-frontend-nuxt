@@ -52,7 +52,7 @@ onMounted(async () => {
     router.push("/admin/dashboard"); // Redireciona se já estiver autenticado
   }
 
-  courses.value = await getCursos(null, config);
+  courses.value = await getCursos({ candidato: true }, config);
 });
 
 // Observa mudanças no estado de autenticação, útil se a verificação demorar

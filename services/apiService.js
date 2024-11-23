@@ -347,6 +347,7 @@ export const getCursos = async (filters, config) => {
         ...(filters.dataInicial && { data_inicial: filters.dataInicial }),
         ...(filters.dataFinal && { data_final: filters.dataFinal }),
         ...(filters.polo && { polo: filters.polo }),
+        ...(filters.candidato && { candidato: filters.candidato }),
       }).toString();
 
     const response = await fetch(
@@ -389,6 +390,7 @@ export const postCursos = async (formData, config) => {
         nome: formData.value.nome,
         descricao: formData.value.descricao,
         prazo_inscricoes: formData.value.prazo_inscricoes,
+        prazo_validacao: formData.value.prazo_validacao,
         polos: formData.value.polos,
         carga_horaria: formData.value.carga_horaria,
         requisitos: formData.value.requisitos,
@@ -498,6 +500,7 @@ export const updateCurso = async (cursoId, formData, config) => {
           nome: formData.value.nome,
           descricao: formData.value.descricao,
           prazo_inscricoes: formData.value.prazo_inscricoes,
+          prazo_validacao: formData.value.prazo_validacao,
           polos: formData.value.polos,
           carga_horaria: formData.value.carga_horaria,
           requisitos: formData.value.requisitos,

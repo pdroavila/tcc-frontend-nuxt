@@ -40,7 +40,7 @@
           </div>
           <div class="stat-card bg-purple-50 p-4 rounded-lg">
             <h4 class="text-sm text-gray-600">Renda Média</h4>
-            <p class="text-2xl font-bold text-purple-600">{{ rendaMedia }}</p>
+            <p class="text-2xl font-bold text-purple-600">{{ faixaRenda }}</p>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ const polos = ref([]);
 const selectedPolo = ref("");
 const totalInscricoes = ref(0);
 const mediaIdade = ref(0);
-const rendaMedia = ref("");
+const faixaRenda = ref("");
 
 const inscricoesChart = ref(null);
 const escolaChart = ref(null);
@@ -295,7 +295,7 @@ const handlePoloChange = async () => {
 
     totalInscricoes.value = estatisticas.total_inscricoes;
     mediaIdade.value = estatisticas.media_idade;
-    rendaMedia.value = estatisticas.media_renda;
+    faixaRenda.value = estatisticas.faixa_renda;
 
     await nextTick();
 
@@ -325,7 +325,7 @@ onMounted(async () => {
     );
     totalInscricoes.value = estatisticas.total_inscricoes;
     mediaIdade.value = estatisticas.media_idade;
-    rendaMedia.value = estatisticas.media_renda;
+    faixaRenda.value = estatisticas.faixa_renda;
   } catch (error) {
     console.error("Erro ao inicializar dashboard:", error);
     toast.error("Erro ao carregar dados iniciais");
