@@ -1,75 +1,25 @@
-# Nuxt 3 Minimal Starter
+# Frontend do TCC
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Este repositório contém o código frontend do meu TCC.
 
-## Setup
+## Pré-requisitos
 
-Make sure to install the dependencies:
+- Docker
+- Docker Compose
 
-```bash
-# npm
-npm install
+## Configuração e Execução
 
-# pnpm
-pnpm install
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/pdroavila/tcc-frontend-nuxt.git
+   cd tcc-frontend-nuxt
+   
+2. Renomeie o arquivo de ambiente:
+   ```bash
+   mv env .env
+   
+3. Inicie a aplicação com Docker Compose:
+   ```bash
+   docker-compose up --build
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+4. Acesse a aplicação em http://localhost:3000.
