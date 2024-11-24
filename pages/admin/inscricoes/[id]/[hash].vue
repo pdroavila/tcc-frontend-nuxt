@@ -252,9 +252,110 @@
           </div>
         </div>
 
-        <!-- Informações Educacionais -->
         <div class="md:col-span-1">
+          <!-- Seção de Anexos -->
           <div class="bg-gray-50 p-4 rounded-lg">
+            <h2 class="text-lg font-medium mb-4 border-b pb-2">
+              Anexos
+              <p class="text-xs">
+                os campos com
+                <span class="text-red-500 font-bold">*</span> requerem uma maior
+                atenção na validação.
+              </p>
+            </h2>
+            <div class="space-y-2">
+              <div class="relative">
+                <button
+                  @click="openAttachment(inscricao.candidato?.anexo_cpf)"
+                  @mouseover="
+                    hoveredAnexo = getAnexoUrl(inscricao.candidato?.anexo_cpf)
+                  "
+                  @mouseleave="hoveredAnexo = ''"
+                  class="w-full text-left p-2 hover:bg-gray-100 rounded"
+                >
+                  <i class="fas fa-file-pdf mr-2"></i> CPF
+                  <span
+                    v-if="!inscricao.candidato.validacao_anexo_cpf"
+                    class="text-red-500 font-bold"
+                    >*</span
+                  >
+                </button>
+                <div
+                  v-if="
+                    hoveredAnexo === getAnexoUrl(inscricao.candidato?.anexo_cpf)
+                  "
+                  class="absolute left-full top-0 ml-2 p-2 bg-white border shadow-lg z-10"
+                  style="width: 200px"
+                >
+                  <img :src="hoveredAnexo" class="max-w-full max-h-full" />
+                </div>
+              </div>
+
+              <div class="relative">
+                <button
+                  @click="openAttachment(inscricao.candidato?.anexo_rg)"
+                  @mouseover="
+                    hoveredAnexo = getAnexoUrl(inscricao.candidato?.anexo_rg)
+                  "
+                  @mouseleave="hoveredAnexo = ''"
+                  class="w-full text-left p-2 hover:bg-gray-100 rounded"
+                >
+                  <i class="fas fa-file-pdf mr-2"></i> RG
+                  <span
+                    v-if="!inscricao.candidato.validacao_anexo_rg"
+                    class="text-red-500 font-bold"
+                    >*</span
+                  >
+                </button>
+                <div
+                  v-if="
+                    hoveredAnexo === getAnexoUrl(inscricao.candidato?.anexo_rg)
+                  "
+                  class="absolute left-full top-0 ml-2 p-2 bg-white border shadow-lg z-10"
+                  style="width: 200px"
+                >
+                  <img :src="hoveredAnexo" class="max-w-full max-h-full" />
+                </div>
+              </div>
+
+              <div class="relative">
+                <button
+                  @click="
+                    openAttachment(
+                      inscricao.candidato?.historico_educacional
+                        .anexo_historico_escolar
+                    )
+                  "
+                  @mouseover="
+                    hoveredAnexo = getAnexoUrl(
+                      inscricao.candidato?.historico_educacional
+                        .anexo_historico_escolar
+                    )
+                  "
+                  @mouseleave="hoveredAnexo = ''"
+                  class="w-full text-left p-2 hover:bg-gray-100 rounded"
+                >
+                  <i class="fas fa-file-pdf mr-2"></i> Histórico Escolar
+                </button>
+                <div
+                  v-if="
+                    hoveredAnexo ===
+                    getAnexoUrl(
+                      inscricao.candidato?.historico_educacional
+                        .anexo_historico_escolar
+                    )
+                  "
+                  class="absolute left-full top-0 ml-2 p-2 bg-white border shadow-lg z-10"
+                  style="width: 200px"
+                >
+                  <img :src="hoveredAnexo" class="max-w-full max-h-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informações Educacionais -->
+          <div class="bg-gray-50 p-4 rounded-lg mt-4">
             <h2 class="text-lg font-medium mb-4 border-b pb-2">
               Informações Educacionais
             </h2>
@@ -314,53 +415,6 @@
                   formatDate(inscricao.data_criacao) || "-"
                 }}</span>
               </div>
-            </div>
-          </div>
-
-          <!-- Seção de Anexos -->
-          <div class="mt-4 bg-gray-50 p-4 rounded-lg">
-            <h2 class="text-lg font-medium mb-4 border-b pb-2">
-              Anexos
-              <p class="text-xs">
-                os campos com
-                <span class="text-red-500 font-bold">*</span> requerem uma maior
-                atenção na validação.
-              </p>
-            </h2>
-            <div class="space-y-2">
-              <button
-                @click="openAttachment(inscricao.candidato?.anexo_cpf)"
-                class="w-full text-left p-2 hover:bg-gray-100 rounded"
-              >
-                <i class="fas fa-file-pdf mr-2"></i> CPF
-                <span
-                  v-if="!inscricao.candidato.validacao_anexo_cpf"
-                  class="text-red-500 font-bold"
-                  >*</span
-                >
-              </button>
-              <button
-                @click="openAttachment(inscricao.candidato?.anexo_rg)"
-                class="w-full text-left p-2 hover:bg-gray-100 rounded"
-              >
-                <i class="fas fa-file-pdf mr-2"></i> RG
-                <span
-                  v-if="!inscricao.candidato.validacao_anexo_rg"
-                  class="text-red-500 font-bold"
-                  >*</span
-                >
-              </button>
-              <button
-                @click="
-                  openAttachment(
-                    inscricao.candidato?.historico_educacional
-                      .anexo_historico_escolar
-                  )
-                "
-                class="w-full text-left p-2 hover:bg-gray-100 rounded"
-              >
-                <i class="fas fa-file-pdf mr-2"></i> Histórico Escolar
-              </button>
             </div>
           </div>
         </div>
@@ -530,6 +584,13 @@ const userId = ref(null);
 const showHistoricoModal = ref(false);
 const historico = ref([]);
 const { verifyScreenAccess } = useAuth();
+
+const hoveredAnexo = ref("");
+
+const getAnexoUrl = (attachment) => {
+  if (!attachment) return "";
+  return `${config.public.apiUrl}/media-image/${attachment}`;
+};
 
 // Computed properties to determine button states
 const isApproveDisabled = computed(() => {
