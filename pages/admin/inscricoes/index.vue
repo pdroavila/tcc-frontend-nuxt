@@ -72,7 +72,7 @@
 
       <div class="flex justify-end mb-4 gap-2">
         <button
-          @click="exportarCSV"
+          @click="exportarCSV()"
           class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
         >
           Exportar CSV
@@ -276,6 +276,30 @@ const formatDate = (date) => {
 //       console.error('Erro ao exportar CSV:', error)
 //     }
 //   }
+
+const exportarCSV = async (url = false) => {
+  try {
+    loading.value = true;
+    const blob = await getInscricoes(filters, config, url, true);
+
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, "inscricoes.csv");
+    } else {
+      const link = document.createElement("a");
+      const downloadUrl = URL.createObjectURL(blob);
+      link.href = downloadUrl;
+      link.setAttribute("download", "inscricoes.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(downloadUrl);
+    }
+  } catch (error) {
+    console.error("Erro ao gerar CSV:", error);
+  } finally {
+    loading.value = false;
+  }
+};
 
 onMounted(async () => {
   await Promise.all([

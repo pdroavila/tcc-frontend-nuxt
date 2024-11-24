@@ -707,25 +707,36 @@ export const getDados = async (config, id) => {
 };
 
 // Esta função lista inscrições de candidatos, aplicando filtros como candidato, curso, polo e data.
-export const getInscricoes = async (filters, config, url) => {
+export const getInscricoes = async (filters, config, url, csv = false) => {
   try {
     const urlBusca = url ? url : `${config.public.apiUrl}/admin/inscricoes`;
+    const params = new URLSearchParams(filters);
 
-    const queryString = new URLSearchParams(filters).toString();
-    const urlComFiltros = `${urlBusca}?${queryString}`;
+    if (csv) {
+      params.append("csv", "1");
+    }
+
+    const urlComFiltros = `${urlBusca}?${params.toString()}`;
 
     const response = await fetch(urlComFiltros, {
       method: "GET",
-      params: filters,
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Erro ao buscar inscricoes");
+      let errorMessage = "Erro ao buscar inscricoes";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch (e) {}
+      throw new Error(errorMessage);
+    }
+
+    if (csv) {
+      const blob = await response.blob();
+      return blob;
     }
 
     return await response.json();
