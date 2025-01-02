@@ -3,7 +3,7 @@
     class="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-75"
   >
     <div
-      class="bg-white rounded-lg shadow-md p-6 w-full max-w-5xl relative mx-4 h-full"
+      class="bg-white rounded-lg shadow-md p-6 w-full max-w-5xl relative mx-4"
     >
       <div class="flex justify-end">
         <button

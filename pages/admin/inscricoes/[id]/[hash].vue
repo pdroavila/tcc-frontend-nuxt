@@ -673,14 +673,14 @@ const rejeitarInscricao = async () => {
     }
 
     loading.value = true;
+    showRejectModal.value = false;
     const response = await rejectInscription(
       id,
-      userId,
+      userId.value,
       rejectReason.value,
       config
     );
     toast.success("Inscrição rejeitada com sucesso.");
-    showRejectModal.value = false;
     router.push(`/admin/inscricoes/`);
   } catch (error) {
     console.error("Erro ao rejeitar inscrição:", error);
@@ -693,7 +693,7 @@ const rejeitarInscricao = async () => {
 const aprovarInscricao = async () => {
   try {
     loading.value = true;
-    const response = await approveInscription(id, userId, config);
+    const response = await approveInscription(id, userId.value, config);
     toast.success("Inscrição aprovada com sucesso.");
     router.push(`/admin/inscricoes/`);
   } catch (error) {

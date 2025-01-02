@@ -80,6 +80,7 @@ onMounted(async () => {
         dataInscricao: inscricao.data_inscricao,
         candidatoNome: candidato.nome,
         candidatoId: candidato.id,
+        carga_horaria: inscricao.carga_horaria,
       }))
     );
   } catch (error) {
